@@ -70,6 +70,14 @@
   filter: drop-shadow(0 0 8px var(--accent-primary));
 }
 
+/* ADD THIS CLASS HERE - OUTSIDE MEDIA QUERY */
+.skill-img-small {
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain;
+  display: block;
+}
+
 .train-car-bottom {
   width: 100%;
   text-align: center;
@@ -135,6 +143,13 @@
   animation: flutter-pulse 2s ease-in-out infinite;
 }
 
+.floating-flutter-logo img {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: contain;
+  display: block;
+}
+
 @keyframes flutter-pulse {
   0%, 100% {
     opacity: 0.3;
@@ -164,9 +179,19 @@
     font-size: 12px;
   }
 
+  .skill-img-small {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
   .floating-flutter-logo {
     font-size: 50px;
     right: 5%;
+  }
+
+  .floating-flutter-logo img {
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .train-car-small {

@@ -13,16 +13,16 @@ const SkillsTrain = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const skills = [
-    { name: 'Flutter', icon: '🦋' },
-    { name: 'React', icon: '⚛️' },
-    { name: 'Node.js', icon: '🟢' },
-    { name: 'MongoDB', icon: '🍃' },
-    { name: 'Firebase', icon: '🔥' },
-    { name: 'Git', icon: '📦' },
-    { name: 'Dart', icon: '🎯' },
-    { name: 'JavaScript', icon: '💛' }
-  ];
+const skills = [
+  { name: 'Flutter', icon: 'https://iconape.com/wp-content/files/yb/61798/png/flutter-logo.png' },
+  { name: 'React', icon: '⚛️' },
+  { name: 'Node.js', icon: '🟢' },
+  { name: 'MongoDB', icon: '🍃' },
+  { name: 'Firebase', icon: '🔥' },
+  { name: 'Git', icon: '📦' },
+  { name: 'Dart', icon: '🎯' },
+  { name: 'JavaScript', icon: '💛' }
+];
 
   return (
     <div className="skills-train-container">
@@ -36,7 +36,14 @@ const SkillsTrain = () => {
         {[...skills, ...skills, ...skills].map((skill, index) => (
           <div key={index} className="train-car">
             <div className="train-car-top">
-              <span className="skill-icon">{skill.icon}</span>
+              <span className="skill-icon-small">
+  {skill.name === 'Flutter' ? (
+    <img src={skill.icon} alt="Flutter" className="skill-img-small" />
+  ) : (
+    skill.icon
+  )}
+</span>
+
             </div>
             <div className="train-car-bottom">
               <span className="skill-name">{skill.name}</span>
@@ -59,7 +66,17 @@ const SkillsTrain = () => {
         {[...skills, ...skills].map((skill, index) => (
           <div key={index} className="train-car train-car-small">
             <div className="train-car-content">
-              <span className="skill-icon-small">{skill.icon}</span>
+
+<span className="skill-icon-small">
+  {skill.name === 'Flutter' ? (
+    <img src={skill.icon} alt="Flutter" className="skill-img-small" />
+  ) : (
+    skill.icon
+  )}
+</span>
+
+
+
             </div>
             <div className="train-wheels">
               <div className="wheel wheel-small"></div>
@@ -70,14 +87,19 @@ const SkillsTrain = () => {
       </div>
 
       {/* Floating Flutter Logo */}
-      <div 
-        className="floating-flutter-logo"
-        style={{
-          transform: `translate(${scrollY * 0.2}px, ${Math.sin(scrollY * 0.01) * 50}px) rotate(${scrollY * 0.1}deg)`
-        }}
-      >
-        🦋
-      </div>
+<div 
+  className="floating-flutter-logo"
+  style={{
+    transform: `translate(${scrollY * 0.2}px, ${Math.sin(scrollY * 0.01) * 50}px) rotate(${scrollY * 0.1}deg)`
+  }}
+>
+  <img 
+    src="https://iconape.com/wp-content/files/yb/61798/png/flutter-logo.png" 
+    alt="Flutter Logo" 
+  />
+</div>
+
+
     </div>
   );
 };

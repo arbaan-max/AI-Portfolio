@@ -54,8 +54,8 @@ const Skills = () => {
       skills: [
         { name: 'MongoDB', level: 85 },
         { name: 'Firestore', level: 80 },
-        { name: 'SQLite', level: 75 },
-        { name: 'PostgreSQL', level: 70 }
+        // { name: 'SQLite', level: 75 },
+        // { name: 'PostgreSQL', level: 70 }
       ]
     },
     {
@@ -63,8 +63,8 @@ const Skills = () => {
       title: 'Tools & Others',
       skills: [
         { name: 'Git & GitHub', level: 92 },
-        { name: 'CI/CD', level: 75 },
-        { name: 'Docker', level: 70 },
+        { name: 'CI/CD', level: 50 },
+        { name: 'Docker', level: 30 },
         { name: 'Agile/Scrum', level: 85 }
       ]
     }

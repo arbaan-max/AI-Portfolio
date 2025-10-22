@@ -80,14 +80,14 @@ const Contact = () => {
     {
       icon: <Mail size={24} />,
       title: 'Email',
-      value: 'arbaan.qureshi@example.com',
-      link: 'mailto:arbaan.qureshi@example.com'
+      value: 'mergeme2"gmail.com',
+      link: 'mailto:mergeme2"gmail.com'
     },
     {
       icon: <Phone size={24} />,
       title: 'Phone',
-      value: '+91 98765 43210',
-      link: 'tel:+919876543210'
+      value: '+91 9164444469',
+      link: 'tel:+919164444469'
     },
     {
       icon: <MapPin size={24} />,

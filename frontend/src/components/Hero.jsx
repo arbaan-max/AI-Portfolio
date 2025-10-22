@@ -39,7 +39,7 @@ const Hero = () => {
   const terminalCommands = [
     '$ flutter create awesome_app',
     '$ cd awesome_app',
-    '$ flutter pub add bloc riverpod',
+    '$ flutter pub add creativity',
     '$ flutter run',
     '> Building... Done!'
   ];
@@ -64,7 +64,7 @@ const Hero = () => {
           </div>
 
           <h1 className="hero-title">
-            Hi, I'm <span className="highlight">Arbaan Qureshi S</span>
+            Hi, I'm <span className="highlight">Arbaan Qureshi </span>
           </h1>
 
           <div className="typing-container">
@@ -90,10 +90,10 @@ const Hero = () => {
           </div>
 
           <div className="hero-social">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-link interactive">
+            <a href="https://github.com/arbaan-max" target="_blank" rel="noopener noreferrer" className="social-link interactive">
               <Github size={24} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-link interactive">
+            <a href="https://www.linkedin.com/in/arbaan-flutter-developer/" target="_blank" rel="noopener noreferrer" className="social-link interactive">
               <Linkedin size={24} />
             </a>
             <a href="mailto:mergeme2@gmail.com" className="social-link interactive">
