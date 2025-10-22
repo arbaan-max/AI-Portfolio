@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CustomCursor from './CustomCursor';
+import SkillsTrain from './SkillsTrain';
 import Hero from './Hero';
 import Skills from './Skills';
 import Projects from './Projects';
@@ -23,6 +24,7 @@ const Portfolio = () => {
   return (
     <div className="portfolio">
       <CustomCursor />
+      <SkillsTrain />
       <Navigation scrolled={scrolled} />
       <Hero />
       <Skills />

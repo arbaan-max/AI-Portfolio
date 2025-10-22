@@ -1,0 +1,179 @@
+.skills-train-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.skills-train {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  display: flex;
+  gap: 16px;
+  will-change: transform;
+}
+
+.skills-train-reverse {
+  top: 70%;
+  left: auto;
+  right: 0;
+}
+
+.train-car {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-primary);
+  border-radius: 12px;
+  padding: 16px 24px;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.2);
+  animation: trainFloat 3s ease-in-out infinite;
+}
+
+.train-car-small {
+  min-width: 80px;
+  padding: 12px 16px;
+}
+
+@keyframes trainFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.train-car-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skill-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 0 10px var(--accent-primary));
+}
+
+.skill-icon-small {
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px var(--accent-primary));
+}
+
+.train-car-bottom {
+  width: 100%;
+  text-align: center;
+}
+
+.skill-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.train-car-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.train-wheels {
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 16px;
+}
+
+.wheel {
+  width: 20px;
+  height: 20px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  border: 3px solid var(--bg-primary);
+  box-shadow: 0 0 15px var(--accent-primary);
+  animation: wheelRotate 1s linear infinite;
+}
+
+.wheel-small {
+  width: 16px;
+  height: 16px;
+  bottom: -10px;
+}
+
+@keyframes wheelRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.floating-flutter-logo {
+  position: absolute;
+  font-size: 80px;
+  top: 45%;
+  right: 10%;
+  opacity: 0.3;
+  filter: drop-shadow(0 0 20px var(--accent-primary));
+  will-change: transform;
+  animation: flutter-pulse 2s ease-in-out infinite;
+}
+
+@keyframes flutter-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 20px var(--accent-primary));
+  }
+  50% {
+    opacity: 0.5;
+    filter: drop-shadow(0 0 40px var(--accent-primary));
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-train {
+    gap: 12px;
+  }
+
+  .train-car {
+    min-width: 90px;
+    padding: 12px 16px;
+  }
+
+  .skill-icon {
+    font-size: 24px;
+  }
+
+  .skill-name {
+    font-size: 12px;
+  }
+
+  .floating-flutter-logo {
+    font-size: 50px;
+    right: 5%;
+  }
+
+  .train-car-small {
+    display: none;
+  }
+
+  .skills-train-reverse {
+    display: none;
+  }
+}

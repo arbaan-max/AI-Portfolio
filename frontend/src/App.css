@@ -13,14 +13,14 @@
   --border-primary: rgb(63, 63, 63);
   --border-subtle: rgba(255, 255, 255, 0.1);
   
-  /* Neon Green Accent */
-  --accent-primary: rgb(218, 255, 1);
-  --accent-hover: rgb(166, 190, 21);
-  --accent-pressed: rgb(134, 155, 16);
-  --accent-bg: rgba(218, 255, 1, 0.1);
+  /* Electric Blue/Cyan Accent */
+  --accent-primary: rgb(0, 217, 255);
+  --accent-hover: rgb(0, 180, 220);
+  --accent-pressed: rgb(0, 150, 190);
+  --accent-bg: rgba(0, 217, 255, 0.1);
   
   /* Secondary Accent */
-  --accent-purple: rgb(127, 74, 142);
+  --accent-purple: rgb(139, 92, 246);
 }
 
 * {

@@ -44,6 +44,10 @@ const Hero = () => {
     '> Building... Done!'
   ];
 
+  const handleGetInTouch = () => {
+    window.location.href = 'mailto:mergeme2@gmail.com?subject=Project Inquiry&body=Hi Arbaan, I would like to discuss a project with you.';
+  };
+
   return (
     <section id="home" className="hero">
       <div className="hero-background">
@@ -75,7 +79,7 @@ const Hero = () => {
           </p>
 
           <div className="hero-actions">
-            <button className="btn-primary interactive">
+            <button className="btn-primary interactive" onClick={handleGetInTouch}>
               <Mail size={20} />
               Get In Touch
             </button>
@@ -92,7 +96,7 @@ const Hero = () => {
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-link interactive">
               <Linkedin size={24} />
             </a>
-            <a href="mailto:arbaan@example.com" className="social-link interactive">
+            <a href="mailto:mergeme2@gmail.com" className="social-link interactive">
               <Mail size={24} />
             </a>
           </div>
