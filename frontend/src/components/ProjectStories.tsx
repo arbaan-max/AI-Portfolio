@@ -14,9 +14,10 @@ type StoryStep = {
 
 function getStorySteps(project: ProjectStory): StoryStep[] {
   return [
-    { number: '01', label: 'Before', title: 'How it was', body: project.before, icon: Clock3 },
-    { number: '02', label: 'Build', title: 'How I solved it', body: project.solution, icon: Wrench },
-    { number: '03', label: 'Impact', title: 'What changed', body: project.result, icon: CheckCircle2 },
+    { number: '01', label: 'Issue', title: 'What was broken', body: project.before, icon: Clock3 },
+    { number: '02', label: 'Challenge', title: 'The Flutter challenge', body: project.challenge, icon: Layers3 },
+    { number: '03', label: 'Build', title: 'How I solved it', body: project.solution, icon: Wrench },
+    { number: '04', label: 'Impact', title: 'What changed', body: project.result, icon: CheckCircle2 },
   ];
 }
 
@@ -33,6 +34,7 @@ function StoryScene({
 }) {
   const activeStep = steps[activeIndex] ?? steps[0];
   const ActiveIcon = activeStep.icon;
+  const progressHeight = steps.length > 1 ? 12 + (activeIndex / (steps.length - 1)) * 78 : 22;
 
   return (
     <div className="perspective-stage relative min-h-[520px] overflow-hidden rounded-[28px] border border-black/10 bg-[#f4f5f9] p-5 shadow-soft-ring md:h-full md:min-h-[760px]">
@@ -87,7 +89,7 @@ function StoryScene({
             <div className="absolute bottom-5 left-[9px] top-5 w-px bg-black/10" />
             <motion.div
               className="absolute left-[9px] top-5 w-px bg-cyan"
-              animate={{ height: `${22 + activeIndex * 34}%` }}
+              animate={{ height: `${progressHeight}%` }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
             />
             {steps.map((step, index) => {
@@ -139,7 +141,7 @@ function StoryScene({
               <p className="text-sm font-semibold text-ink">{project.scale}</p>
             </div>
           </div>
-          <p className="line-clamp-3 text-sm leading-relaxed text-zinc-600">{activeStep.body}</p>
+          <p className="line-clamp-4 text-sm leading-relaxed text-zinc-600">{activeStep.body}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {project.highlights.slice(0, 3).map((item) => (
               <span key={item} className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[0.68rem] font-medium text-zinc-600">
@@ -180,7 +182,15 @@ function ScrollStoryObjects() {
 
 function StoryModal({ project, onClose }: { project: ProjectStory; onClose: () => void }) {
   const [activeStep, setActiveStep] = useState(0);
+  const [activeBeatIndex, setActiveBeatIndex] = useState(0);
   const steps = getStorySteps(project);
+  const activeBeat = project.storyBeats[activeBeatIndex] ?? project.storyBeats[0];
+  const nextBeatIndex = (activeBeatIndex + 1) % project.storyBeats.length;
+
+  const selectBeat = (index: number) => {
+    setActiveBeatIndex(index);
+    setActiveStep(Math.min(index, steps.length - 1));
+  };
 
   return (
     <motion.div
@@ -213,6 +223,7 @@ function StoryModal({ project, onClose }: { project: ProjectStory; onClose: () =
               </p>
             </div>
             <button
+              type="button"
               onClick={onClose}
               className="grid h-11 w-11 flex-none place-items-center rounded-full border border-black/10 bg-[#f7f8fb] text-ink"
               aria-label="Close story"
@@ -221,13 +232,65 @@ function StoryModal({ project, onClose }: { project: ProjectStory; onClose: () =
             </button>
           </div>
 
-          <div className="grid gap-4">
+          <div className="mb-5 rounded-[28px] border border-cyan/30 bg-cyan/10 p-4">
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <p className="font-industrial text-[0.64rem] font-bold uppercase tracking-[0.16em] text-cyan">business story mode</p>
+              </div>
+              <span className="hidden rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink shadow-soft-ring sm:inline-flex">
+                {activeBeatIndex + 1}/{project.storyBeats.length}
+              </span>
+            </div>
+
+            <motion.div
+              key={activeBeat.title}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="rounded-[24px] border border-black/10 bg-white p-5 shadow-soft-ring"
+            >
+              <h4 className="font-display text-2xl font-semibold leading-none tracking-[-0.04em] text-ink">{activeBeat.title}</h4>
+              <p className="mt-3 leading-relaxed text-zinc-700">{activeBeat.body}</p>
+            </motion.div>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div className="flex flex-wrap gap-2">
+                {project.storyBeats.map((beat, index) => (
+                  <button
+                    key={beat.title}
+                    type="button"
+                    onClick={() => selectBeat(index)}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      activeBeatIndex === index ? 'border-ink bg-ink text-white' : 'border-black/10 bg-white text-zinc-600 hover:border-cyan/50'
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => selectBeat(nextBeatIndex)}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+              >
+                next chapter <ArrowRight size={15} />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid gap-3">
             {steps.map((step, index) => (
               <button
                 key={step.number}
                 type="button"
-                onClick={() => setActiveStep(index)}
-                onMouseEnter={() => setActiveStep(index)}
+                onClick={() => {
+                  setActiveStep(index);
+                  setActiveBeatIndex(Math.min(index, project.storyBeats.length - 1));
+                }}
+                onMouseEnter={() => {
+                  setActiveStep(index);
+                  setActiveBeatIndex(Math.min(index, project.storyBeats.length - 1));
+                }}
                 className={`group rounded-3xl border p-5 text-left transition-colors ${
                   activeStep === index ? 'border-cyan/50 bg-cyan/10' : 'border-black/10 bg-[#f7f8fb] hover:border-cyan/35'
                 }`}
@@ -268,13 +331,13 @@ export function ProjectStories() {
               <Layers3 size={14} /> project stories
             </p>
             <h2 className="targo-heading text-5xl font-bold text-[#2b3033] md:text-6xl">
-              Six builds.
+              20+ projects.
               <br />
-              <span className="text-cyan">One career story.</span>
+              <span className="text-cyan">5 companies + freelance.</span>
             </h2>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-zinc-600">
-            Tap a card to see how the project started, what you handled, and what changed through the build.
+            Tap a card to read the short build story: the issue, the Flutter challenge, the software decisions, and the result.
           </p>
         </Reveal>
 

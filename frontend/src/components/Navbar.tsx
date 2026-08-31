@@ -33,7 +33,7 @@ export function Navbar() {
         <div className="col-span-5 flex items-center justify-end gap-3 md:col-span-3">
           <a
             href="#contact"
-            className="chamfer-sm hidden items-center gap-3 border border-cyan-border bg-cyan px-6 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-[#1a1c1e] shadow-[0_0_0_1px_rgba(21,188,223,0.35),0_10px_30px_-12px_rgba(15,163,194,0.6)] transition-colors duration-300 hover:bg-cyan-hover md:inline-flex"
+            className="chamfer-sm hidden items-center gap-3 px-6 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-white/15 md:inline-flex"
           >
             <Mail size={16} strokeWidth={1.6} /> Contact us
           </a>

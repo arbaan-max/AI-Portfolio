@@ -16,11 +16,11 @@ export function SkillsSection() {
             </h2>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-zinc-600">
-            A focused toolkit for cross-platform apps, clean state, backend integration, performance, and delivery leadership.
+            A practical toolkit for cross-platform apps, web experiences, backend systems, clean architecture, performance, and delivery leadership.
           </p>
         </Reveal>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           {skillClusters.map((cluster, index) => {
             const Icon = cluster.icon;
             return (

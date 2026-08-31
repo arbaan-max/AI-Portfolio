@@ -4,10 +4,10 @@ import { ArrowRight, Check, Github, Linkedin, Mail, MapPin, Phone } from 'lucide
 import { profile } from '../data/portfolio';
 import { Reveal } from './Reveal';
 
-const inquiryTypes = ['Flutter app', 'Architecture review', 'Backend/API work', 'Team lead role'];
+const inquiryTypes = ['App build', 'Website or landing page', 'Desktop/TV app', 'Backend/API work', 'Architecture review', 'Product lead role'];
 
 export function ContactSection() {
-  const [selected, setSelected] = useState<string[]>(['Flutter app']);
+  const [selected, setSelected] = useState<string[]>(['App build']);
   const [message, setMessage] = useState('');
 
   const toggleType = (type: string) => {
@@ -37,7 +37,7 @@ export function ContactSection() {
             the next build.
           </h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-white/70">
-            Available for senior Flutter work, lead mobile engineering, architecture decisions, and full-stack delivery support.
+            Available for cross-platform apps, websites, landing pages, backend/API systems, architecture decisions, and product delivery leadership.
           </p>
 
           <div className="mt-10 grid gap-3">
