@@ -1,47 +1,68 @@
+import { motion } from 'framer-motion';
 import { skillClusters } from '../data/portfolio';
-import { Reveal } from './Reveal';
+import { ease, inView } from '../lib/motion';
+import { RevealText } from './ui/RevealText';
+import { SectionLabel } from './ui/SectionLabel';
+
+const card = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ease.out, staggerChildren: 0.05, delayChildren: 0.2 } },
+};
+
+const chip = {
+  hidden: { opacity: 0, scale: 0.85 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: ease.out } },
+};
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="relative overflow-hidden bg-[#f7f8fb] px-6 py-24 md:px-12 lg:px-20">
-      <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-cyan/25 blur-3xl" />
-      <div className="mx-auto max-w-7xl">
-        <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <section id="skills" className="bg-ink px-gutter py-section text-paper">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">technical map</p>
-            <h2 className="font-display text-5xl font-semibold leading-[0.95] tracking-[-0.04em] text-ink md:text-6xl">
-              The stack behind
-              <br />
-              the story.
-            </h2>
+            <SectionLabel index="05" className="mb-5 text-paper/60">
+              Skills
+            </SectionLabel>
+            <RevealText text="The *toolkit.*" className="display text-display-lg" />
           </div>
-          <p className="max-w-md text-lg leading-relaxed text-zinc-600">
-            A practical toolkit for cross-platform apps, web experiences, backend systems, clean architecture, performance, and delivery leadership.
+          <p className="max-w-sm text-paper/60 lg:pb-2">
+            Grouped by the job they do, from the first screen to the server behind it.
           </p>
-        </Reveal>
+        </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+        <motion.div
+          className="grid gap-px bg-paper/15 sm:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          whileInView="show"
+          viewport={inView}
+          transition={{ staggerChildren: 0.08 }}
+        >
           {skillClusters.map((cluster, index) => {
             const Icon = cluster.icon;
             return (
-              <Reveal key={cluster.title} delay={0.06 * index}>
-                <div className="h-full rounded-[30px] border border-black/10 bg-white/70 p-6 shadow-soft-ring backdrop-blur-xl">
-                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
+              <motion.article
+                key={cluster.title}
+                variants={card}
+                className="group relative bg-ink p-8 transition-colors duration-500 hover:bg-graphite lg:p-10"
+              >
+                <div className="flex items-start justify-between">
+                  <span className="chamfer-sm grid h-12 w-12 place-items-center bg-paper/10 text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-ink">
                     <Icon size={22} strokeWidth={1.8} />
-                  </div>
-                  <h3 className="font-display text-2xl font-semibold tracking-[-0.03em] text-ink">{cluster.title}</h3>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {cluster.items.map((item) => (
-                      <span key={item} className="rounded-full border border-black/10 bg-[#f6f7f9] px-3 py-1.5 text-sm text-zinc-700">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                  </span>
+                  <span className="label text-paper/40">0{index + 1}</span>
                 </div>
-              </Reveal>
+                <h3 className="display mt-8 text-xl">{cluster.title}</h3>
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {cluster.items.map((item) => (
+                    <motion.li key={item} variants={chip} className="chip text-paper/80">
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

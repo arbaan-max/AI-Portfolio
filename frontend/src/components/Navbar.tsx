@@ -1,76 +1,159 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
-import { Mail, Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'framer-motion';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { navItems } from '../data/portfolio';
+import { ease } from '../lib/motion';
+
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    ids.forEach((id) => {
+      const node = document.getElementById(id);
+      if (node) {
+        observer.observe(node);
+      }
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+
+  return active;
+}
+
+const sectionIds = ['home', ...navItems.map((item) => item.href.slice(1)), 'contact'];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection(sectionIds);
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    setHidden(latest > previous && latest > 240);
+    setScrolled(latest > 24);
+  });
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-gradient-to-b from-[#F2F1F0]/95 to-transparent px-5 py-5 backdrop-blur-[3px] sm:px-8 md:py-8">
-      <nav className="mx-auto grid max-w-7xl grid-cols-12 items-center gap-4 font-industrial">
-        <a href="#home" className="col-span-7 flex items-center gap-3 md:col-span-3">
-          <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-[#111] shadow-soft-ring">
-            <span className="h-2 w-5 -rotate-[25deg] rounded-full bg-white" />
-          </span>
-          <span className="text-[22px] font-normal lowercase tracking-[-0.5px] text-[#111] sm:text-[30px]">
-            arbaan
-          </span>
-        </a>
+    <>
+      <motion.div
+        aria-hidden="true"
+        className="fixed left-0 top-0 z-[60] h-[3px] w-full origin-left bg-accent"
+        style={{ scaleX: progress }}
+      />
 
-        <div className="col-span-6 hidden justify-center gap-[34px] md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.06em] text-[#3a3a3a] transition-colors duration-300 hover:text-black"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="col-span-5 flex items-center justify-end gap-3 md:col-span-3">
-          <a
-            href="#contact"
-            className="chamfer-sm hidden items-center gap-3 px-6 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-white/15 md:inline-flex"
-          >
-            <Mail size={16} strokeWidth={1.6} /> Contact us
+      <motion.header
+        className="fixed left-0 top-0 z-50 w-full px-3 pt-3 sm:px-5 sm:pt-4"
+        initial={{ y: -90 }}
+        animate={{ y: hidden && !open ? -110 : 0 }}
+        transition={{ duration: 0.5, ease: ease.out }}
+      >
+        <nav
+          aria-label="Primary"
+          className={`mx-auto flex max-w-[1400px] items-center justify-between gap-4 border px-4 py-2.5 transition-[background-color,border-color,box-shadow] duration-300 sm:px-5 ${
+            scrolled || open
+              ? 'border-[var(--nav-line)] bg-[var(--nav-bg)] shadow-[0_12px_40px_-24px_rgb(var(--c-fg)/0.5)] backdrop-blur-xl'
+              : 'border-transparent bg-transparent'
+          }`}
+        >
+          <a href="#home" className="flex items-center gap-3" aria-label="Arbaan Qureshi, back to top">
+            <span className="chamfer-sm grid h-9 w-9 place-items-center bg-ink font-display text-sm font-bold text-paper">
+              AQ
+            </span>
+            <span className="font-display text-lg font-bold uppercase tracking-[0.04em]">Arbaan</span>
           </a>
-          <button
-            className="grid h-10 w-10 place-items-center rounded-full bg-ink text-white shadow-soft-ring md:hidden"
-            aria-label="Toggle navigation"
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </nav>
+
+          <ul className="hidden items-center gap-1 lg:flex">
+            {navItems.map((item) => {
+              const isActive = active === item.href.slice(1);
+              return (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`label relative block px-4 py-2.5 transition-colors duration-200 ${
+                      isActive ? 'text-paper' : 'text-ink/70 hover:text-ink'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="chamfer-sm absolute inset-0 bg-ink"
+                        transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative">{item.label}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="flex items-center gap-2">
+            <a href="#contact" className="btn btn-primary hidden !py-2.5 sm:inline-flex">
+              Let&apos;s talk <ArrowUpRight size={15} strokeWidth={2.4} />
+            </a>
+            <button
+              type="button"
+              className="chamfer-sm grid h-10 w-10 place-items-center bg-ink text-paper lg:hidden"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              onClick={() => setOpen((value) => !value)}
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </nav>
+      </motion.header>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -18 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
-            className="mx-5 mt-5 rounded-[28px] border border-black/10 bg-white/90 p-5 shadow-glass backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-end bg-ink px-gutter pb-12 pt-28 text-paper lg:hidden"
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.6, ease: ease.inOut }}
           >
-            <div className="flex flex-col gap-3">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-2xl px-3 py-3 font-display text-3xl tracking-tight text-ink transition-colors hover:bg-zinc-100"
-                >
-                  {item.label}
-                </a>
+            <ul className="flex flex-col gap-1">
+              {[...navItems, { label: 'Contact', href: '#contact' }].map((item, index) => (
+                <li key={item.href} className="overflow-hidden">
+                  <motion.a
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="display flex items-baseline gap-4 py-2 text-[clamp(2.2rem,11vw,4rem)]"
+                    initial={{ y: '110%' }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.7, ease: ease.out, delay: 0.18 + index * 0.06 }}
+                  >
+                    <span className="label text-accent">0{index + 1}</span>
+                    {item.label}
+                  </motion.a>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

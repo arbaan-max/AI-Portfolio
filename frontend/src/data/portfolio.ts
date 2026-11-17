@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Boxes, Code2, Database, GitBranch, Globe2, Layers3 } from 'lucide-react';
+import { Boxes, Code2, Database, GitBranch, Globe2, Layers3, MonitorSmartphone, PenTool } from 'lucide-react';
 
 export type SkillCluster = {
   title: string;
@@ -27,38 +27,68 @@ export type ProjectStory = {
   }[];
 };
 
+export type WebProject = {
+  id: string;
+  name: string;
+  kind: string;
+  origin: string;
+  market: string;
+  url: string;
+  displayUrl: string;
+  summary: string;
+  features: string[];
+  tags: string[];
+  image: string;
+  imageFull: string;
+  note?: string;
+  theme: { bg: string; fg: string; accent: string };
+};
+
 export const profile = {
   name: 'Arbaan Qureshi',
-  role: 'Cross-platform Product Engineer and App Lead',
+  role: 'Product Engineer · Apps, Web and Platforms',
+  company: 'VirtuProse',
   location: 'Bangalore, India',
   email: 'mergeme2@gmail.com',
   phone: '+91 9164444469',
   github: 'https://github.com/arbaan-max',
   linkedin: 'https://www.linkedin.com/in/arbaan-flutter-developer/',
   experience: 'Almost 5 years',
-  productionApps: '5+',
-  projectFootprint: '20+',
   headline:
-    'I turn product ideas into production-ready digital systems across mobile, web, desktop, TV, backend APIs, and launch-ready landing pages.',
+    'Product engineer with almost five years across Flutter apps, web platforms, ERP software and backend APIs, for businesses in India, Kuwait and Saudi Arabia.',
+  // Words wrapped in *asterisks* are highlighted.
+  story:
+    "I'm Arbaan, a product engineer from Bangalore. I started in *Flutter,* shipping apps for schools, newsrooms and a *twelve-app* quick-commerce operation. Today at *VirtuProse* I build the web side too: storefronts, editorial sites and *ERP* *software* that businesses in Kuwait, Saudi Arabia and India open every working day.",
 };
 
 export const navItems = [
-  { label: 'work', href: '#work' },
-  { label: 'story', href: '#story' },
-  { label: 'skills', href: '#skills' },
-  { label: 'contact', href: '#contact' },
+  { label: 'Story', href: '#story' },
+  { label: 'Web', href: '#work' },
+  { label: 'Apps', href: '#apps' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+];
+
+export const marqueeRows = [
+  ['Flutter', 'Next.js', 'React', 'Node.js', 'TypeScript', 'Firebase', 'MongoDB'],
+  ['Mobile apps', 'E-commerce', 'ERP systems', 'Marketplaces', 'Dashboards', 'Arabic + English'],
 ];
 
 export const skillClusters: SkillCluster[] = [
   {
     title: 'Cross-platform apps',
     icon: Boxes,
-    items: ['Android', 'iOS', 'Windows', 'macOS', 'TV apps', 'Flutter and Dart'],
+    items: ['Flutter', 'Dart', 'Android', 'iOS', 'Windows', 'macOS', 'TV apps'],
   },
   {
-    title: 'Product interfaces',
+    title: 'Web platforms',
     icon: Globe2,
-    items: ['Websites', 'Landing pages', 'Dashboards', 'Admin panels', 'Responsive UI'],
+    items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'ERP dashboards'],
+  },
+  {
+    title: 'Interface craft',
+    icon: PenTool,
+    items: ['Landing pages', 'Admin panels', 'Responsive UI', 'Arabic / RTL layouts', 'Motion and interaction'],
   },
   {
     title: 'Architecture and state',
@@ -74,6 +104,166 @@ export const skillClusters: SkillCluster[] = [
     title: 'Team delivery',
     icon: GitBranch,
     items: ['Team coordination', 'Code review', 'Technical decisions', 'Agile delivery'],
+  },
+];
+
+export const webProjects: WebProject[] = [
+  {
+    id: 'trapped-inn',
+    name: 'Trapped Inn',
+    kind: 'Escape-room venue site',
+    origin: 'Built at VirtuProse',
+    market: 'Salmiya, Kuwait',
+    url: 'https://trapped-inn-seven.vercel.app/',
+    displayUrl: 'trapped-inn-seven.vercel.app',
+    summary:
+      'Seven escape-room stories inside one mystery hotel. The homepage is the lobby itself: visitors move through an illustrated hall and pick the door they want to open.',
+    features: [
+      'Interactive "choose your room" lobby hero',
+      'Seven room story pages with pricing',
+      'Booking handoff per room',
+      'Group and team visit enquiries',
+    ],
+    tags: ['Next.js', 'Immersive UI', 'Booking flow'],
+    image: '/projects/trapped-inn-hero.jpg',
+    imageFull: '/projects/trapped-inn-full.jpg',
+    theme: { bg: '#0B1017', fg: '#F4EFE6', accent: '#F0B648' },
+  },
+  {
+    id: 'lily-eve',
+    name: 'Lily Eve & Eucalyptus',
+    kind: 'Two-brand flower and plant store',
+    origin: 'Built at VirtuProse',
+    market: 'Kuwait',
+    url: 'https://lily-eve-ecommerce.vercel.app/',
+    displayUrl: 'lily-eve-ecommerce.vercel.app',
+    summary:
+      'One storefront for two brands: Lily Eve for flowers, Eucalyptus for plants. Shoppers browse by brand or occasion, pay in KWD and track delivery across Kuwait.',
+    features: [
+      'Two brands sharing one catalogue and bag',
+      'English and Arabic storefront',
+      'Accounts, bag and order tracking',
+      'KWD pricing with a free-delivery threshold',
+    ],
+    tags: ['Next.js', 'E-commerce', 'EN / AR'],
+    image: '/projects/lily-eve-hero.jpg',
+    imageFull: '/projects/lily-eve-full.jpg',
+    theme: { bg: '#EDE5D8', fg: '#33302D', accent: '#6F5540' },
+  },
+  {
+    id: 'maktob',
+    name: 'Maktob Holding',
+    kind: 'Private investment office',
+    origin: 'Built at VirtuProse',
+    market: 'Kuwait',
+    url: 'https://maktob-website.vercel.app/',
+    displayUrl: 'maktob-website.vercel.app',
+    summary:
+      'An editorial site for a private investment office. It reads like a published record of market calls, with long-form analysis on equities, commodities and the Kuwait Stock Exchange.',
+    features: [
+      'Bilingual publishing in English and Arabic',
+      'Blog with category filtering',
+      'Light and dark reading themes',
+      'Opportunities and book sections',
+    ],
+    tags: ['Next.js', 'Editorial', 'EN / AR', 'Theming'],
+    image: '/projects/maktob-hero.jpg',
+    imageFull: '/projects/maktob-full.jpg',
+    theme: { bg: '#0F1A2E', fg: '#F4F1EA', accent: '#D9B25F' },
+  },
+  {
+    id: 'orvia',
+    name: 'ORVIA',
+    kind: 'Auto-parts ERP',
+    origin: 'Built at VirtuProse',
+    market: 'Saudi Arabia',
+    url: 'https://erp.virtuprose.com/',
+    displayUrl: 'erp.virtuprose.com',
+    summary:
+      'An operating system for auto-parts businesses: items, inventory, wholesale, dealers and accounting in one workspace, with Saudi VAT and ZATCA e-invoicing built in.',
+    features: [
+      'Arabic-first interface with English switch',
+      'Company data isolated per business',
+      'Role-based access by branch and warehouse',
+      'VAT and ZATCA e-invoicing',
+    ],
+    tags: ['Next.js', 'ERP', 'Multi-tenant', 'Arabic / RTL'],
+    image: '/projects/orvia-hero.jpg',
+    imageFull: '/projects/orvia-hero.jpg',
+    note: 'Private workspace. The product sits behind this sign-in.',
+    theme: { bg: '#0D1F18', fg: '#EEF2EF', accent: '#4ADE9E' },
+  },
+  {
+    id: 'tekrio',
+    name: 'Tekrio',
+    kind: 'Pre-owned device marketplace',
+    origin: 'Client work',
+    market: 'Karnataka, India',
+    url: 'https://www.tekrio.in/',
+    displayUrl: 'tekrio.in',
+    summary:
+      'A three-sided marketplace for used phones. Sellers describe a device, verified buyers bid through partnered stores, and the highest offer comes back with doorstep pickup.',
+    features: [
+      'Guided five-step selling journey',
+      'Live offers from multiple verified buyers',
+      'Separate retailer and buyer onboarding',
+      'City-based service across seven cities',
+    ],
+    tags: ['Marketplace', 'Onboarding flows', 'Lead capture'],
+    image: '/projects/tekrio-hero.jpg',
+    imageFull: '/projects/tekrio-full.jpg',
+    theme: { bg: '#18243D', fg: '#FFFFFF', accent: '#4CC2F5' },
+  },
+];
+
+export const experience = [
+  {
+    company: 'VirtuProse',
+    tag: 'Now',
+    focus: 'Web platforms, e-commerce and ERP',
+    work: 'Lily Eve & Eucalyptus, Maktob Holding, Trapped Inn, ORVIA',
+  },
+  {
+    company: 'Tekrio',
+    tag: 'Client',
+    focus: 'Pre-owned device marketplace',
+    work: 'Customer, retailer and buyer journeys on tekrio.in',
+  },
+  {
+    company: 'Nextaverse',
+    tag: 'Flutter',
+    focus: 'Quick-commerce ecosystem',
+    work: 'Tingting, almost 12 connected apps',
+  },
+  {
+    company: 'Cumin360',
+    tag: 'Flutter',
+    focus: 'EdTech',
+    work: 'GrowonTeachers and GrowonStudents',
+  },
+  {
+    company: 'Gloify',
+    tag: 'Flutter',
+    focus: 'Pay-and-earn consumer app',
+    work: 'Playzo',
+  },
+  {
+    company: 'Kaizenque',
+    tag: 'Flutter',
+    focus: 'News and content',
+    work: 'ThePeople Wire',
+  },
+  {
+    company: 'Pqube',
+    tag: 'Full stack',
+    focus: 'End-to-end product build',
+    work: 'Udupi app, backend and frontend',
+  },
+  {
+    company: 'Freelance',
+    tag: 'Full stack',
+    focus: 'Business management platform',
+    work: 'OneSpa, built in 10 working days',
   },
 ];
 
@@ -308,15 +498,27 @@ export const projectStories: ProjectStory[] = [
   },
 ];
 
-export const deliveryStats = [
-  { value: profile.experience, label: 'building production software across companies and freelance work' },
-  { value: profile.projectFootprint, label: 'apps, websites, dashboards, APIs, and platform modules shaped' },
-  { value: profile.productionApps, label: 'companies and freelance environments where I shaped real products' },
-  { value: '6', label: 'featured real project stories from companies and freelance work' },
+export const stats = [
+  { value: 5, prefix: '~', suffix: '', label: 'years building production software' },
+  { value: 20, prefix: '', suffix: '+', label: 'apps, sites and platform modules shipped' },
+  { value: 12, prefix: '', suffix: '', label: 'connected apps in one quick-commerce ecosystem' },
+  { value: 3, prefix: '', suffix: '', label: 'countries served: India, Kuwait, Saudi Arabia' },
 ];
 
 export const focusAreas = [
-  { icon: Code2, label: 'Hands-on senior product engineering' },
-  { icon: Boxes, label: 'Apps, web, desktop, and platform systems' },
-  { icon: Globe2, label: 'Interfaces that feel premium and ready to launch' },
+  {
+    icon: Code2,
+    title: 'Whole-product ownership',
+    body: 'Screens, state, APIs, backend logic, dashboards and release blockers. I can carry a product from the first idea to the version people actually use.',
+  },
+  {
+    icon: MonitorSmartphone,
+    title: 'Every screen size',
+    body: 'Android and iOS apps, Flutter on desktop and TV, plus websites, storefronts and admin panels, all connected to the same stable backend.',
+  },
+  {
+    icon: Globe2,
+    title: 'Launch-ready finish',
+    body: 'Clean layouts, fast interactions, proper loading and error states, and Arabic and English side by side when the market needs both.',
+  },
 ];

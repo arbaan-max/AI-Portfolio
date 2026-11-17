@@ -1,0 +1,66 @@
+/*
+ * Design tokens — three layers.
+ *   1. Primitives  : raw values. Never referenced by components.
+ *   2. Semantic    : what a value is for. Tailwind theme maps to these.
+ *   3. Component   : per-component decisions built from semantic tokens.
+ * Colours are stored as RGB channels so Tailwind opacity modifiers work
+ * (e.g. `bg-ink/10`). See DESIGN.md for usage rules.
+ */
+:root {
+  /* ── 1. Primitives ─────────────────────────────────────────────── */
+  --p-paper-50: 250 250 249;
+  --p-paper-100: 242 241 240;
+  --p-paper-200: 230 229 226;
+  --p-ink-900: 16 18 20;
+  --p-ink-700: 30 34 38;
+  --p-ink-500: 86 91 96;
+  --p-cyan-500: 21 188 223;
+  --p-cyan-800: 10 111 134;
+  --p-volt-500: 159 255 0;
+
+  /* ── 2. Semantic ───────────────────────────────────────────────── */
+  --c-bg: var(--p-paper-100);
+  --c-surface: var(--p-paper-50);
+  --c-sunken: var(--p-paper-200);
+  --c-fg: var(--p-ink-900);
+  --c-fg-muted: var(--p-ink-500);
+  --c-raised-dark: var(--p-ink-700);
+  --c-accent: var(--p-cyan-500);
+  --c-accent-text: var(--p-cyan-800); /* accent for small text on light */
+  --c-signal: var(--p-volt-500); /* "live / now" indicator only */
+
+  --font-display: 'Quantico', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --text-display-xl: clamp(2.6rem, 5.9vw, 5.25rem);
+  --text-display-lg: clamp(2.1rem, 4.8vw, 4.25rem);
+  --text-display-md: clamp(1.6rem, 2.8vw, 2.6rem);
+  --text-body-lg: clamp(1.05rem, 1.25vw, 1.25rem);
+  --text-label: 0.72rem;
+
+  --space-gutter: clamp(1.25rem, 5vw, 5rem);
+  --space-section: clamp(5rem, 11vw, 10rem);
+
+  --chamfer-sm: 10px;
+  --chamfer-md: 16px;
+  --chamfer-lg: 28px;
+  --radius-frame: 14px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-base: 450ms;
+  --dur-slow: 900ms;
+
+  --shadow-lift: 0 40px 90px -40px rgb(var(--c-fg) / 0.45);
+  --shadow-frame: 0 30px 70px -28px rgb(var(--c-fg) / 0.55);
+
+  /* ── 3. Component ──────────────────────────────────────────────── */
+  --btn-primary-bg: rgb(var(--c-accent));
+  --btn-primary-fg: rgb(var(--c-fg));
+  --btn-ghost-line: rgb(var(--c-fg) / 0.2);
+  --nav-bg: rgb(var(--c-bg) / 0.82);
+  --nav-line: rgb(var(--c-fg) / 0.1);
+  --frame-chrome: #1b1e22;
+  --grid-line: rgb(var(--c-fg) / 0.05);
+}

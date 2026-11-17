@@ -1,48 +1,55 @@
 /** @type {import('tailwindcss').Config} */
+const token = (name) => `rgb(var(${name}) / <alpha-value>)`;
+
 export default {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
-        industrial: ['Quantico', 'Arial Narrow', 'sans-serif'],
-        mono: ['Inter', 'system-ui', 'sans-serif'],
-      },
+      // Everything here maps to semantic tokens in src/styles/tokens.css.
       colors: {
-        'bg-base': '#EDEEF5',
-        'targo-base': '#F2F1F0',
-        'brand-green': '#9fff00',
-        cyan: '#15BCDF',
-        'cyan-hover': '#3fd0ef',
-        'cyan-border': '#0fa3c2',
-        ink: '#1a1a1a',
-        smoke: '#8e8e8e',
-        moss: '#1C2E1E',
-        'soft-line': 'rgba(26, 26, 26, 0.10)',
+        paper: token('--c-bg'),
+        surface: token('--c-surface'),
+        sunken: token('--c-sunken'),
+        ink: token('--c-fg'),
+        muted: token('--c-fg-muted'),
+        graphite: token('--c-raised-dark'),
+        accent: token('--c-accent'),
+        'accent-deep': token('--c-accent-text'),
+        signal: token('--c-signal'),
+      },
+      fontFamily: {
+        sans: ['var(--font-body)'],
+        display: ['var(--font-display)'],
+        mono: ['var(--font-mono)'],
+      },
+      fontSize: {
+        'display-xl': ['var(--text-display-xl)', { lineHeight: '0.95' }],
+        'display-lg': ['var(--text-display-lg)', { lineHeight: '0.98' }],
+        'display-md': ['var(--text-display-md)', { lineHeight: '1.02' }],
+        'body-lg': ['var(--text-body-lg)', { lineHeight: '1.6' }],
+      },
+      spacing: {
+        gutter: 'var(--space-gutter)',
+        section: 'var(--space-section)',
+      },
+      borderRadius: {
+        frame: 'var(--radius-frame)',
       },
       boxShadow: {
-        glass: '0 24px 80px rgba(20, 23, 31, 0.12)',
-        'soft-ring': 'inset 0 1px 0 rgba(255,255,255,0.85), 0 18px 70px rgba(17, 24, 39, 0.12)',
+        lift: 'var(--shadow-lift)',
+        frame: 'var(--shadow-frame)',
+      },
+      transitionTimingFunction: {
+        out: 'var(--ease-out)',
       },
       keyframes: {
-        blink: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0' },
-        },
-        drift: {
-          '0%, 100%': { transform: 'translate3d(0, 0, 0) rotate(0deg)' },
-          '50%': { transform: 'translate3d(12px, -14px, 0) rotate(2deg)' },
-        },
-        orbit: {
-          from: { transform: 'rotate(0deg) translateX(126px) rotate(0deg)' },
-          to: { transform: 'rotate(360deg) translateX(126px) rotate(-360deg)' },
+        pulseDot: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(2.4)', opacity: '0' },
         },
       },
       animation: {
-        blink: 'blink 1s step-end infinite',
-        drift: 'drift 9s ease-in-out infinite',
-        orbit: 'orbit 18s linear infinite',
+        'pulse-dot': 'pulseDot 1.8s ease-out infinite',
       },
     },
   },

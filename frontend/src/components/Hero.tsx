@@ -1,93 +1,188 @@
-import { motion } from 'motion/react';
-import { Sparkles } from 'lucide-react';
+import { useRef, type MouseEvent } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { profile } from '../data/portfolio';
-import { useTypewriter } from '../hooks/useTypewriter';
-import heroPoster from '../assets/hero-poster.jpg';
-import { AutoplayVideo } from './AutoplayVideo';
+import { ease } from '../lib/motion';
+import { BrowserFrame } from './ui/BrowserFrame';
+import { Magnetic } from './ui/Magnetic';
+import { RevealText } from './ui/RevealText';
 
-const TARGO_HERO_VIDEO =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260823_050407_500d0339-ab28-41c1-9688-132a74a3b5aa.mp4';
+const stack = [
+  {
+    id: 'maktob',
+    src: '/projects/maktob-hero.jpg',
+    alt: 'Maktob Holding investment office website',
+    url: 'maktob-website.vercel.app',
+    position: 'right-0 top-0 w-[72%]',
+    rotate: 5,
+    depth: 0.5,
+  },
+  {
+    id: 'lily-eve',
+    src: '/projects/lily-eve-hero.jpg',
+    alt: 'Lily Eve and Eucalyptus flower and plant store',
+    url: 'lily-eve-ecommerce.vercel.app',
+    position: 'left-0 top-[23%] w-[74%]',
+    rotate: -4,
+    depth: 0.9,
+  },
+  {
+    id: 'trapped-inn',
+    src: '/projects/trapped-inn-hero.jpg',
+    alt: 'Trapped Inn escape room website',
+    url: 'trapped-inn-seven.vercel.app',
+    position: 'right-[3%] top-[47%] w-[82%]',
+    rotate: 2,
+    depth: 1.4,
+  },
+];
 
-export function Hero() {
-  const { displayed, done } = useTypewriter('Apps, websites, APIs, dashboards, and platforms that ship.', 34, 520);
+type StackCardProps = {
+  item: (typeof stack)[number];
+  index: number;
+  ready: boolean;
+  pointerX: MotionValue<number>;
+  pointerY: MotionValue<number>;
+  scroll: MotionValue<number>;
+};
+
+function StackCard({ item, index, ready, pointerX, pointerY, scroll }: StackCardProps) {
+  // Pointer parallax plus scroll lift, both scaled by the card's depth.
+  const x = useTransform(pointerX, (value) => value * item.depth * -40);
+  const y = useTransform<number, number>(
+    [pointerY, scroll],
+    ([pointer, scrolled]) => pointer * item.depth * -26 - scrolled * item.depth * 190,
+  );
 
   return (
-    <section id="home" className="relative min-h-[860px] overflow-hidden bg-targo-base pb-14 pt-0 sm:min-h-[920px] md:min-h-[100svh] md:pb-16 md:pt-28">
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <AutoplayVideo
-          src={TARGO_HERO_VIDEO}
-          poster={heroPoster}
-          startAt={2}
-          className="absolute right-[-52vw] top-4 h-[92svh] w-[170vw] max-w-none object-contain object-right opacity-36 saturate-70 contrast-90 sm:right-[-34vw] sm:w-[140vw] sm:opacity-44 md:top-0 md:right-[-34%] md:h-auto md:w-[104%] md:opacity-64 md:saturate-55 md:contrast-90 lg:right-[-32%] lg:opacity-66 xl:right-[-30%]"
-        />
-      </div>
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(242,241,240,0.62)_0%,rgba(242,241,240,0.86)_48%,#F2F1F0_100%)] md:hidden" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] hidden w-[50%] bg-[linear-gradient(90deg,#F2F1F0_0%,#F2F1F0_66%,rgba(242,241,240,0.7)_88%,rgba(242,241,240,0)_100%)] md:block" />
+    <motion.div className={`absolute ${item.position}`} style={{ x, y }}>
+      <motion.div
+        initial={{ opacity: 0, y: 140, rotate: item.rotate * 3 }}
+        animate={ready ? { opacity: 1, y: 0, rotate: item.rotate } : undefined}
+        transition={{ duration: 1.2, ease: ease.out, delay: 0.45 + index * 0.14 }}
+      >
+        <motion.div
+          animate={{ y: [0, -9, 0] }}
+          transition={{ duration: 6 + index * 1.3, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <BrowserFrame src={item.src} alt={item.alt} url={item.url} eager />
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-12 gap-x-4 px-5 pt-[150px] sm:pt-[190px] md:px-12 md:pt-12 lg:px-20">
-        <div className="col-span-12 md:col-span-7 lg:col-span-6">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="mb-7 inline-flex max-w-[calc(100vw-2.5rem)] items-center gap-2 border-l-2 border-cyan bg-white/70 px-3 py-2 text-[0.64rem] font-bold uppercase leading-tight tracking-[0.12em] text-ink shadow-soft-ring backdrop-blur-xl sm:px-4 sm:text-xs sm:tracking-[0.15em]"
-          >
-            <Sparkles size={14} />
-            <span className="sm:hidden">{profile.projectFootprint} apps/modules shaped</span>
-            <span className="hidden sm:inline">{profile.projectFootprint} apps and platform modules shaped</span>
-          </motion.div>
+export function Hero({ ready }: { ready: boolean }) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, -110]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, 160]);
 
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.08 }}
-            className="targo-heading max-w-[680px] text-[clamp(2.3rem,10vw,3.5rem)] font-bold text-[#2b3033] md:text-[min(clamp(34px,7.6vw,80px),9.2vh)]"
-          >
-            Scaling
-            <br />
-            digital
-            <br />
-            products
-            <br />
-            <span className="md:inline-block md:pl-[min(238px,28vw)]">for</span>
-            <br />
-            <span className="md:inline-block md:pl-[min(238px,28vw)]">real</span>
-            <br />
-            <span className="text-cyan md:inline-block md:pl-[min(238px,28vw)]">products</span>
-          </motion.h1>
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 55, damping: 18 });
+  const smoothY = useSpring(pointerY, { stiffness: 55, damping: 18 });
 
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
-            className="mt-8 max-w-md text-lg leading-relaxed text-[#6b6f72] md:ml-[min(238px,28vw)] md:text-xl"
-          >
-            <span>{displayed}</span>
-            {!done && <span className="ml-1 inline-block h-[1em] w-[2px] translate-y-1 bg-ink animate-blink" />}
-          </motion.div>
+  const handleMove = (event: MouseEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
 
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.3 }}
-            className="mt-10 md:ml-[min(238px,28vw)]"
-          >
-            <a
-              href="#work"
-              className="chamfer inline-flex items-center gap-4 border border-[#0fa3c2] bg-[#15BCDF] px-8 py-4 font-industrial text-sm font-bold uppercase tracking-[0.14em] text-[#1a1c1e] shadow-[0_0_0_1px_rgba(21,188,223,0.42),0_12px_34px_-12px_rgba(15,163,194,0.8)] transition-all duration-300 hover:bg-[#3fd0ef] hover:shadow-[0_0_0_1px_rgba(21,188,223,0.65),0_16px_42px_-12px_rgba(15,163,194,0.9)]"
-            >
-              Explore stories <span className="h-px w-6 bg-ink" />
+  const fade = (delay: number) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: ready ? { opacity: 1, y: 0 } : undefined,
+    transition: { duration: 0.9, ease: ease.out, delay },
+  });
+
+  return (
+    <section
+      id="home"
+      ref={ref}
+      onMouseMove={handleMove}
+      className="relative overflow-hidden px-gutter pb-16 pt-32 lg:min-h-[100svh] lg:pb-24 lg:pt-32"
+    >
+      <motion.div aria-hidden="true" className="grid-lines absolute inset-[-10%_0]" style={{ y: gridY }} />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(60%_50%_at_82%_30%,rgb(var(--c-accent)/0.2),transparent_70%),linear-gradient(180deg,transparent_70%,rgb(var(--c-bg))_100%)]"
+      />
+
+      <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-12 lg:gap-6">
+        <motion.div className="lg:col-span-7" style={{ y: copyY, opacity: copyOpacity }}>
+          <motion.p {...fade(0.1)} className="label mb-7 inline-flex items-center gap-3 bg-ink px-4 py-2.5 text-paper">
+            <span className="relative grid h-2 w-2 place-items-center">
+              <span className="absolute h-2 w-2 animate-pulse-dot rounded-full bg-signal" />
+              <span className="h-2 w-2 rounded-full bg-signal" />
+            </span>
+            Now building at {profile.company}
+          </motion.p>
+
+          <RevealText
+            as="h1"
+            start={ready}
+            delay={0.15}
+            text="I build the apps, sites & systems businesses *run* *on.*"
+            className="display max-w-[13ch] text-display-xl"
+            accentClassName="text-accent-deep"
+          />
+
+          <motion.p {...fade(0.75)} className="mt-8 max-w-xl text-body-lg text-muted">
+            {profile.headline}
+          </motion.p>
+
+          <motion.div {...fade(0.9)} className="mt-10 flex flex-wrap items-center gap-4">
+            <Magnetic>
+              <a href="#work" className="btn btn-primary">
+                See the work <ArrowDown size={16} strokeWidth={2.4} />
+              </a>
+            </Magnetic>
+            <a href="#contact" className="btn btn-dark">
+              Start a project <ArrowUpRight size={16} strokeWidth={2.4} />
             </a>
           </motion.div>
+        </motion.div>
+
+        <div className="relative h-[92vw] max-h-[560px] [perspective:1400px] sm:h-[72vw] lg:col-span-5 lg:h-[640px] lg:max-h-none">
+          {stack.map((item, index) => (
+            <StackCard
+              key={item.id}
+              item={item}
+              index={index}
+              ready={ready}
+              pointerX={smoothX}
+              pointerY={smoothY}
+              scroll={scrollYProgress}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="hidden md:absolute md:bottom-8 md:left-10 md:z-10 md:block md:text-xs md:uppercase md:tracking-[0.18em] md:text-zinc-500">
-        {profile.location}
-      </div>
-      <div className="hidden md:absolute md:bottom-8 md:right-10 md:z-10 md:block md:text-right md:text-xs md:uppercase md:tracking-[0.18em] md:text-zinc-500">
-        {profile.experience} experience
-      </div>
+      <motion.div
+        {...fade(1.2)}
+        className="label relative mx-auto mt-14 flex max-w-[1400px] items-center justify-between text-muted lg:absolute lg:inset-x-gutter lg:bottom-8 lg:mt-0"
+      >
+        <span>{profile.location}</span>
+        <span className="hidden items-center gap-3 sm:flex">
+          Scroll
+          <span className="relative h-10 w-px overflow-hidden bg-ink/15">
+            <motion.span
+              className="absolute left-0 top-0 h-1/2 w-full bg-ink"
+              animate={{ y: ['-100%', '200%'] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </span>
+        </span>
+        <span>{profile.experience} shipping</span>
+      </motion.div>
     </section>
   );
 }
