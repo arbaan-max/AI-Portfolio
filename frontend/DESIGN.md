@@ -1,70 +1,88 @@
 # Design system
 
-The portfolio keeps the industrial language of the previous version (Quantico caps, cyan accent, cut corners) and
-formalises it into tokens. Source of truth: `src/styles/tokens.css`. Tailwind reads those tokens in
-`tailwind.config.js`; motion values live in `src/lib/motion.ts`.
+A quiet gallery wall. The palette, the serif-and-Jost pairing, the hairline rules and the wide-tracked labels
+come from the Lily Eve storefront; the soft wash and the overlapping framed plates come from the gallery hero
+reference. The wall stays neutral so the screenshots carry the colour.
+
+Source of truth: `src/styles/tokens.css`. Tailwind reads those tokens in `tailwind.config.js`; motion values
+live in `src/lib/motion.ts`.
 
 ## Token layers
 
 | Layer | Prefix | Used by | Example |
 |-------|--------|---------|---------|
-| Primitive | `--p-*` | Semantic tokens only | `--p-cyan-500: 21 188 223` |
-| Semantic | `--c-*`, `--font-*`, `--text-*`, `--space-*` | Tailwind theme, CSS | `--c-accent: var(--p-cyan-500)` |
-| Component | `--btn-*`, `--nav-*`, `--frame-*` | One component each | `--btn-primary-bg` |
+| Primitive | `--p-*` | Semantic tokens only | `--p-bronze-700: 111 85 64` |
+| Semantic | `--c-*`, `--font-*`, `--text-*`, `--space-*` | Tailwind theme, CSS | `--c-accent: var(--p-bronze-700)` |
+| Component | `--btn-*`, `--rule`, `--nav-bg`, `--plate-mat` | One component each | `--btn-fill` |
 
-Colours are stored as RGB channels so opacity modifiers work: `bg-ink/10`, `text-paper/60`.
+Colours are stored as RGB channels so opacity modifiers work: `border-ink/15`, `text-surface/70`.
 
 ## Colour
 
-| Tailwind | Token | Use |
-|----------|-------|-----|
-| `paper` | `--c-bg` | Default page background |
-| `surface` | `--c-surface` | Raised cards on paper |
-| `sunken` | `--c-sunken` | Recessed section background |
-| `ink` | `--c-fg` | Text, dark sections |
-| `graphite` | `--c-raised-dark` | Hover surface on ink |
-| `muted` | `--c-fg-muted` | Secondary text on paper (6.3:1) |
-| `accent` | `--c-accent` | Fills, large type on ink, active states |
-| `accent-deep` | `--c-accent-text` | Accent for text on paper. Plain `accent` fails contrast there |
-| `signal` | `--c-signal` | The "now / live" dot. Nothing else |
+| Tailwind | Token | Hex | Use |
+|----------|-------|-----|-----|
+| `paper` | `--c-bg` | `#F6EFE7` | The wall. Default background |
+| `surface` | `--c-surface` | `#FBF8F3` | Plate mats, the form card, text on dark |
+| `band` | `--c-band` | `#EDE5D8` | One tan band (Experience), preloader, mobile menu |
+| `ink` | `--c-fg` | `#262321` | Headings |
+| `body` | `--c-body` | `#3A3836` | Running text |
+| `muted` | `--c-muted` | `#6B645C` | Secondary text, labels (5.2:1 on paper) |
+| `accent` | `--c-accent` | `#6F5540` | Buttons, italic emphasis, active states (6.4:1 on paper) |
+| `gold` | `--c-accent-soft` | `#C9A780` | Accent on the dark band only |
+| `night` | `--c-dark` | `#3A3836` | One dark band (App case studies) and the footer |
+| `wash-a/b/c` | `--c-wash-*` | peach, sage, sky | The drifting wash behind the hero and contact. Nowhere else |
 
-Project panels in the web gallery take their colours from the site they show (`theme` in
-`src/data/portfolio.ts`). Those are content, not system tokens.
+Why these: warm neutrals read as calm and careful, the near-black ink carries authority, and bronze is the one
+colour that asks for action. Nothing on the wall competes with the work.
 
 ## Type
 
 | Role | Class | Font |
 |------|-------|------|
-| Display | `.display` + `text-display-xl / lg / md` | Quantico 700, uppercase |
-| Body | default, `text-body-lg` | Inter |
-| Label | `.label` | IBM Plex Mono, uppercase, 0.14em tracking |
+| Display | `.display` + `text-display-xl / lg / md` | Cormorant Garamond 500, lining figures |
+| Emphasis | `italic text-accent` | Cormorant Garamond italic. One word or phrase per heading at most |
+| Lead | `font-display text-lead` | The About paragraph |
+| Body | default, `text-body-lg` | Jost 400 |
+| Label | `.label` | Jost 500, uppercase, 0.22em tracking |
 
 ## Shape
 
-The cut corner is the signature. Use `.chamfer-sm` (buttons, icon tiles), `.chamfer` and `.chamfer-lg` (cards,
-panels). Browser frames are the one rounded element (`rounded-frame`) because they depict real windows.
+Square corners (`rounded-plate` is 2px), 1px hairlines at 15% ink, and the double rule (`.rule-double`) under
+section headings and above the footer line. Screenshots are hung as `.plate`: a cream mat, a hairline and a
+soft shadow. The only circles are the accordion toggle and the cursor label.
 
 ## Components
 
-| Component | File | Variants / states |
-|-----------|------|-------------------|
-| Button | `.btn` in `index.css` | `btn-primary`, `btn-dark`; hover inverts, active scales to 0.97 |
-| Chip | `.chip` | Inherits text colour; border is 24% of it |
-| SectionLabel | `ui/SectionLabel.tsx` | `index` + title |
-| RevealText | `ui/RevealText.tsx` | In-view or controlled by `start`; `*word*` marks accent words |
-| Reveal | `ui/Reveal.tsx` | Fade-up on enter; `delay`, `y` |
-| Counter | `ui/Counter.tsx` | Counts up once in view |
-| Magnetic | `ui/Magnetic.tsx` | Pointer pull; `strength` |
-| BrowserFrame | `ui/BrowserFrame.tsx` | Parent `.frame-pan` pans the screenshot on hover |
+| Component | Where | Variants / states |
+|-----------|-------|-------------------|
+| Button | `.btn` in `index.css` | Bronze block; an ink fill slides up on hover, press scales to 0.97. Inverts inside `.on-dark` |
+| Text link | `.link` | Underline retracts on hover, arrow nudges |
+| Plate | `.plate`, `.plate-view`, `.plate-pan` | Static, cycling (hero), stacked curtain (work). `.plate-pan` scrolls the tall screenshot on hover |
+| SectionHead | `ui/SectionHead.tsx` | `align="left" \| "center"`; eyebrow, heading, double rule, optional lead |
+| RevealText | `ui/RevealText.tsx` | In view, or controlled with `start`. `*word*` marks the italic emphasis |
+| Reveal, DrawnRule | `ui/Reveal.tsx` | Fade-up; a hairline that draws from the left |
+| Wash | `ui/Wash.tsx` | Decorative, `aria-hidden` |
+| Cursor | `ui/Cursor.tsx` | Shows the `data-cursor="…"` label of the element under a fine pointer |
+
+Dark sections add `.on-dark`; display text, rules and buttons pick up their dark values from it.
 
 ## Motion
 
 | Token | Value | Use |
 |-------|-------|-----|
-| `ease.out` | `[0.22, 1, 0.36, 1]` | Entrances, reveals |
-| `ease.inOut` | `[0.65, 0, 0.35, 1]` | Preloader, menu wipe |
-| `duration.fast / base / slow` | 0.25 / 0.6 / 0.95s | Feedback / default / hero |
+| `ease.soft` | `[0.16, 1, 0.3, 1]` | Everything that enters or settles |
+| `ease.inOut` | `[0.65, 0, 0.35, 1]` | Preloader and menu wipes |
+| `duration.fast / base / slow` | 0.25 / 0.6 / 1.1s | Press / hover / reveals |
+| `curtain.open / closed` | `inset(…)` clip-paths | Image reveals wipe upward |
 
-Scroll-linked pieces: hero parallax stack, velocity marquee, word-by-word story, pinned horizontal gallery,
-stacking app cards, experience progress line, footer name slide. `MotionConfig reducedMotion="user"` and the
-CSS media query switch transforms off for people who ask for less motion.
+What moves: the preloader writes the name; hero words rise and the two plates wipe in, cycle and shift with the
+pointer; the About paragraph inks in with scroll; the work plate swaps by curtain as each project reaches the
+middle of the screen; case-study rows open and close; rules draw themselves; scrolling is eased with Lenis.
+`MotionConfig reducedMotion="user"`, the reduced-motion media query and a Lenis opt-out turn all of it down
+for people who ask for less motion.
+
+## Copy
+
+Plain and specific. The h1 names what is built, headings name things, buttons are a verb and an object
+("Start a project" is the one main action, worded the same in the nav, hero and contact form). No statistic
+strips, no icon-tile feature cards, no numbered eyebrows.

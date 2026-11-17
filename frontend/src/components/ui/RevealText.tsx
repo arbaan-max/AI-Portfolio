@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ease, inView } from '../../lib/motion';
 
 type RevealTextProps = {
-  /** Words wrapped in *asterisks* take the accent colour. */
+  /** Words wrapped in *asterisks* are set in bronze italic. */
   text: string;
   as?: 'h1' | 'h2' | 'h3' | 'p';
   className?: string;
@@ -14,18 +14,18 @@ type RevealTextProps = {
 };
 
 const word = {
-  hidden: { y: '118%' },
-  show: { y: '0%', transition: { duration: 0.95, ease: ease.out } },
+  hidden: { y: '115%' },
+  show: { y: '0%', transition: { duration: 1.1, ease: ease.soft } },
 };
 
-/** Masked word-by-word rise. The signature text entrance of the site. */
+/** Words rise out of a mask, one after another. */
 export function RevealText({
   text,
   as = 'h2',
   className = '',
-  accentClassName = 'text-accent',
+  accentClassName = 'italic text-accent',
   delay = 0,
-  stagger = 0.055,
+  stagger = 0.05,
   start,
 }: RevealTextProps) {
   const Tag = motion[as];
@@ -51,7 +51,7 @@ export function RevealText({
           <span
             key={`${value}-${index}`}
             aria-hidden="true"
-            className="-mb-[0.14em] mr-[0.24em] inline-block overflow-hidden pb-[0.14em] align-bottom"
+            className="-mb-[0.22em] mr-[0.24em] inline-block overflow-hidden pb-[0.22em] align-bottom"
           >
             <motion.span variants={word} className={`inline-block ${accent ? accentClassName : ''}`}>
               {value}

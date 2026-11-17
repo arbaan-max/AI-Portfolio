@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ease } from '../lib/motion';
 import { profile } from '../data/portfolio';
 
-/** Short counted intro. Slides away to hand over to the hero entrance. */
+const letters = profile.name.split('');
+
+/** The name writes itself, a rule draws under it, then the sheet lifts off the page. */
 export function Preloader({ onDone }: { onDone: () => void }) {
   const reduced = useReducedMotion();
-  const count = useMotionValue(0);
-  const padded = useTransform(count, (latest) => Math.round(latest).toString().padStart(3, '0'));
-  const barScale = useTransform(count, [0, 100], [0, 1]);
 
   useEffect(() => {
     if (reduced) {
@@ -16,30 +15,50 @@ export function Preloader({ onDone }: { onDone: () => void }) {
       return;
     }
     document.body.style.overflow = 'hidden';
-    const controls = animate(count, 100, { duration: 1.25, ease: ease.inOut, onComplete: onDone });
+    const timer = window.setTimeout(onDone, 1750);
     return () => {
-      controls.stop();
+      window.clearTimeout(timer);
       document.body.style.overflow = '';
     };
-  }, [count, onDone, reduced]);
+  }, [onDone, reduced]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex flex-col justify-between bg-ink px-gutter py-8 text-paper"
-      exit={{ y: '-100%' }}
-      transition={{ duration: 0.85, ease: ease.inOut }}
+      className="fixed inset-0 z-[100] grid place-items-center bg-band px-gutter"
+      exit={{ clipPath: 'inset(0% 0% 100% 0%)' }}
+      initial={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+      transition={{ duration: 1, ease: ease.inOut }}
     >
-      <div className="label flex justify-between text-paper/60">
-        <span>{profile.name}</span>
-        <span>Portfolio 2026</span>
-      </div>
-      <div>
-        <motion.span className="display block text-[clamp(5rem,22vw,16rem)] leading-none tabular-nums">
-          {padded}
-        </motion.span>
-        <div className="mt-6 h-px w-full bg-paper/15">
-          <motion.div className="h-full origin-left bg-accent" style={{ scaleX: barScale }} />
-        </div>
+      <div className="text-center">
+        <p aria-label={profile.name} className="display text-[clamp(2.6rem,8vw,6rem)]">
+          {letters.map((letter, index) => (
+            <span key={index} aria-hidden="true" className="-mb-[0.2em] inline-block overflow-hidden pb-[0.2em]">
+              <motion.span
+                className="inline-block whitespace-pre"
+                initial={{ y: '115%' }}
+                animate={{ y: '0%' }}
+                transition={{ duration: 0.9, ease: ease.soft, delay: 0.1 + index * 0.035 }}
+              >
+                {letter}
+              </motion.span>
+            </span>
+          ))}
+        </p>
+        <motion.span
+          aria-hidden="true"
+          className="rule-double mx-auto mt-6 block w-40 origin-center"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1.1, ease: ease.soft, delay: 0.45 }}
+        />
+        <motion.p
+          className="label mt-6 text-muted"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          {profile.role} · Portfolio
+        </motion.p>
       </div>
     </motion.div>
   );

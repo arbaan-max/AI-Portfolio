@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 
-/** Motion tokens — mirror --ease-out / --dur-* in tokens.css. */
+/** Motion tokens — mirror --ease-soft / --dur-* in tokens.css. */
 export const ease = {
-  out: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  soft: [0.16, 1, 0.3, 1] as [number, number, number, number],
   inOut: [0.65, 0, 0.35, 1] as [number, number, number, number],
 };
 
-export const duration = { fast: 0.25, base: 0.6, slow: 0.95 };
+export const duration = { fast: 0.25, base: 0.6, slow: 1.1 };
 
-export const inView = { once: true, amount: 0.25 } as const;
+/** Fires once an element's top edge is 12% above the bottom of the screen, however tall it is. */
+export const inView = { once: true, margin: '0px 0px -12% 0px' } as const;
 
-export const wrap = (min: number, max: number, value: number) => {
-  const range = max - min;
-  return ((((value - min) % range) + range) % range) + min;
+/** Clip-path states for the "curtain" image reveal. */
+export const curtain = {
+  closed: 'inset(100% 0% 0% 0%)',
+  open: 'inset(0% 0% 0% 0%)',
 };
 
 export function useMediaQuery(query: string) {

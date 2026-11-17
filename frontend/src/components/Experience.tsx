@@ -1,72 +1,82 @@
-import { useRef } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { experience } from '../data/portfolio';
+import { motion } from 'framer-motion';
+import { experience, toolGroups } from '../data/portfolio';
 import { ease, inView } from '../lib/motion';
-import { RevealText } from './ui/RevealText';
-import { SectionLabel } from './ui/SectionLabel';
+import { SectionHead } from './ui/SectionHead';
 
 export function Experience() {
-  const listRef = useRef<HTMLOListElement>(null);
-  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 0.8', 'end 0.6'] });
-  const line = useSpring(scrollYProgress, { stiffness: 120, damping: 28 });
-
   return (
-    <section id="experience" className="bg-paper px-gutter py-section">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <SectionLabel index="04" className="mb-5 text-muted">
-              Experience
-            </SectionLabel>
-            <RevealText text="Where I've *built.*" className="display text-display-lg" accentClassName="text-accent-deep" />
+    <section id="experience" className="bg-band px-gutter py-section">
+      <div className="mx-auto max-w-page">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <SectionHead eyebrow="Experience" title="Where I've *worked*" className="lg:sticky lg:top-28">
+              Six companies, one client project and freelance work.
+            </SectionHead>
           </div>
-          <p className="max-w-sm text-muted lg:pb-2">
-            Six companies, one client engagement and freelance builds. Different products, the same job: get it live.
-          </p>
+
+          <ol className="lg:col-span-7 lg:col-start-6">
+            {experience.map((item, index) => (
+              <motion.li
+                key={item.company}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={inView}
+                transition={{ duration: 0.9, ease: ease.soft, delay: index * 0.05 }}
+                className="group relative grid gap-x-8 gap-y-1 border-t border-ink/15 py-6 last:border-b sm:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_5.5rem] sm:items-baseline"
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 inset-y-0 -mx-4 origin-left scale-x-0 bg-surface transition-transform duration-700 ease-soft group-hover:scale-x-100"
+                />
+                <h3 className="display relative text-[1.9rem] transition-transform duration-700 ease-soft group-hover:translate-x-2">
+                  {item.company}
+                </h3>
+                <p className="relative">
+                  <span className="block text-ink">{item.focus}</span>
+                  <span className="block text-muted">{item.work}</span>
+                </p>
+                <span className={`label relative sm:text-right ${item.tag === 'Current' ? 'text-accent' : 'text-muted'}`}>
+                  {item.tag}
+                </span>
+              </motion.li>
+            ))}
+          </ol>
         </div>
 
-        <ol ref={listRef} className="relative border-t border-ink/15">
-          <motion.span
-            aria-hidden="true"
-            className="absolute left-0 top-0 hidden h-full w-[3px] origin-top bg-accent lg:block"
-            style={{ scaleY: line }}
-          />
-          {experience.map((item, index) => (
-            <motion.li
-              key={item.company}
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={inView}
-              transition={{ duration: 0.7, ease: ease.out, delay: index * 0.04 }}
-              className="group relative grid items-baseline gap-x-8 gap-y-2 overflow-hidden border-b border-ink/15 py-7 sm:grid-cols-[3rem_minmax(0,1fr)_auto] lg:grid-cols-[5rem_minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1.3fr)_6rem] lg:px-8 lg:py-9"
-            >
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 origin-bottom scale-y-0 bg-ink transition-transform duration-500 ease-out group-hover:scale-y-100"
-              />
-              <span className="label relative text-muted transition-colors duration-300 group-hover:text-accent">
-                0{index + 1}
-              </span>
-              <h3 className="display relative text-[clamp(1.6rem,3.4vw,3rem)] transition-[color,transform] duration-500 ease-out group-hover:translate-x-2 group-hover:text-paper">
-                {item.company}
-              </h3>
-              <p className="relative font-medium transition-colors duration-300 group-hover:text-paper sm:col-start-2 lg:col-start-auto">
-                {item.focus}
-              </p>
-              <p className="relative text-muted transition-colors duration-300 group-hover:text-paper/65 sm:col-start-2 lg:col-start-auto">
-                {item.work}
-              </p>
-              <span
-                className={`label relative inline-flex w-fit items-center gap-2 px-3 py-1.5 sm:col-start-3 sm:row-start-1 lg:col-start-auto lg:row-start-auto ${
-                  item.tag === 'Now' ? 'bg-ink text-paper group-hover:bg-accent group-hover:text-ink' : 'text-muted group-hover:text-paper/65'
-                } transition-colors duration-300`}
+        <div className="mt-28 grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <SectionHead eyebrow="Tools" title="What I work *with*" />
+          </div>
+
+          <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+            {toolGroups.map((group, groupIndex) => (
+              <motion.div
+                key={group.title}
+                initial="hidden"
+                whileInView="show"
+                viewport={inView}
+                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: groupIndex * 0.08 } } }}
               >
-                {item.tag === 'Now' && <span className="h-1.5 w-1.5 rounded-full bg-signal" />}
-                {item.tag}
-              </span>
-            </motion.li>
-          ))}
-        </ol>
+                <h3 className="label border-b border-ink/15 pb-4 text-accent">{group.title}</h3>
+                <ul className="mt-4">
+                  {group.items.map((item) => (
+                    <li key={item} className="overflow-hidden">
+                      <motion.span
+                        className="block py-1 font-display text-[1.45rem] text-ink"
+                        variants={{
+                          hidden: { y: '110%' },
+                          show: { y: '0%', transition: { duration: 0.9, ease: ease.soft } },
+                        }}
+                      >
+                        {item}
+                      </motion.span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

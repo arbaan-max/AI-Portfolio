@@ -6,14 +6,18 @@
 
 html {
   background: rgb(var(--c-bg));
+}
+
+html:not(.lenis) {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
 }
 
 body {
-  @apply bg-paper font-sans text-ink antialiased;
+  @apply bg-paper font-sans text-body antialiased;
   min-width: 320px;
   margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
 }
 
 button,
@@ -28,126 +32,140 @@ button {
 }
 
 ::selection {
-  background: rgb(var(--c-signal));
-  color: rgb(var(--c-fg));
+  background: rgb(var(--c-accent));
+  color: rgb(var(--c-surface));
 }
 
 :focus-visible {
   outline: 2px solid rgb(var(--c-accent));
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 @layer components {
-  /* Industrial display type: Quantico, uppercase, tight. */
+  /* Serif display: quiet, light, slightly tight. */
   .display {
     font-family: var(--font-display);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.005em;
-    line-height: 0.96;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    line-height: 1.04;
+    color: rgb(var(--c-fg));
+  }
+  /* Cormorant defaults to old-style figures; phone numbers and names need lining ones. */
+  .display,
+  .font-display {
+    font-variant-numeric: lining-nums;
+  }
+  .on-dark .display {
+    color: rgb(var(--c-surface));
   }
 
-  /* Small technical label. */
+  /* Wide-tracked small caps, the Lily Eve eyebrow. */
   .label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: var(--text-label);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.22em;
+    line-height: 1.4;
   }
 
-  /* Signature shape: opposite corners cut. */
-  .chamfer {
-    clip-path: polygon(
-      0 0,
-      calc(100% - var(--chamfer-md)) 0,
-      100% var(--chamfer-md),
-      100% 100%,
-      var(--chamfer-md) 100%,
-      0 calc(100% - var(--chamfer-md))
-    );
+  /* Two hairlines, a few pixels apart. */
+  .rule-double {
+    height: 5px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
   }
-  .chamfer-sm {
-    clip-path: polygon(
-      0 0,
-      calc(100% - var(--chamfer-sm)) 0,
-      100% var(--chamfer-sm),
-      100% 100%,
-      var(--chamfer-sm) 100%,
-      0 calc(100% - var(--chamfer-sm))
-    );
-  }
-  .chamfer-lg {
-    clip-path: polygon(
-      0 0,
-      calc(100% - var(--chamfer-lg)) 0,
-      100% var(--chamfer-lg),
-      100% 100%,
-      var(--chamfer-lg) 100%,
-      0 calc(100% - var(--chamfer-lg))
-    );
+  .on-dark .rule-double {
+    border-color: rgb(var(--c-surface) / 0.22);
   }
 
+  /* Button: bronze block, an ink fill slides up on hover. */
   .btn {
-    @apply chamfer-sm inline-flex items-center justify-center gap-3 px-6 py-3.5 font-display text-[0.8rem] font-bold uppercase tracking-[0.14em];
-    transition:
-      background-color var(--dur-fast) ease,
-      color var(--dur-fast) ease,
-      transform var(--dur-fast) ease;
+    @apply label relative inline-flex items-center justify-center gap-3 overflow-hidden px-7 py-4;
+    isolation: isolate;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    transition: transform var(--dur-fast) var(--ease-soft);
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-fill);
+    transform: translateY(101%);
+    transition: transform var(--dur-base) var(--ease-soft);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: translateY(0);
   }
   .btn:active {
     transform: scale(0.97);
   }
-  .btn-primary {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-fg);
+  .btn svg {
+    transition: transform var(--dur-base) var(--ease-soft);
   }
-  .btn-primary:hover {
-    background: rgb(var(--c-fg));
-    color: rgb(var(--c-bg));
+  .btn:hover svg {
+    transform: translate(3px, -3px);
   }
-  .btn-dark {
-    @apply bg-ink text-paper;
-  }
-  .btn-dark:hover {
-    background: rgb(var(--c-accent));
-    color: rgb(var(--c-fg));
+  .on-dark .btn {
+    --btn-bg: rgb(var(--c-surface));
+    --btn-fg: rgb(var(--c-fg));
+    --btn-fill: rgb(var(--c-accent-soft));
   }
 
-  .chip {
-    @apply inline-flex items-center px-3 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.08em];
-    border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  /* Text link: the underline draws in from the left. */
+  .link {
+    @apply inline-flex items-center gap-2;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    padding-bottom: 0.35em;
+    transition: background-size var(--dur-base) var(--ease-soft);
+  }
+  .link:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+  .link svg {
+    transition: transform var(--dur-base) var(--ease-soft);
+  }
+  .link:hover svg {
+    transform: translate(3px, -3px);
   }
 
-  .grid-lines {
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 56px 56px;
+  /* A screenshot hung like a matted print. */
+  .plate {
+    background: var(--plate-mat);
+    padding: clamp(6px, 0.7vw, 10px);
+    border-radius: var(--radius-plate);
+    box-shadow: var(--shadow-plate);
+    outline: 1px solid rgb(var(--c-fg) / 0.08);
+    outline-offset: -1px;
   }
-
-  .text-outline {
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1px currentColor;
-  }
-
-  /* Browser frame: tall screenshot pans on hover/focus. */
-  .frame-view {
+  .plate-view {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
     container-type: size;
+    background: rgb(var(--c-band));
   }
-  .frame-view img {
-    transition: transform 1.2s var(--ease-out);
+  /* Tall screenshots scroll inside the plate while hovered. */
+  .plate-pan img {
+    transition: transform 1.4s var(--ease-soft);
   }
-  .frame-pan:hover .frame-view img,
-  .frame-pan:focus-visible .frame-view img {
-    transform: translateY(calc(-100% + 100cqh));
+  .plate-pan:hover img.is-live,
+  .plate-pan:focus-visible img.is-live {
+    transform: translateY(min(0px, calc(-100% + 100cqh)));
     transition: transform 9s linear;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
   }
   *,
   *::before,

@@ -4,63 +4,64 @@
  *   2. Semantic    : what a value is for. Tailwind theme maps to these.
  *   3. Component   : per-component decisions built from semantic tokens.
  * Colours are stored as RGB channels so Tailwind opacity modifiers work
- * (e.g. `bg-ink/10`). See DESIGN.md for usage rules.
+ * (e.g. `border-ink/15`). See DESIGN.md for usage rules.
  */
 :root {
   /* ── 1. Primitives ─────────────────────────────────────────────── */
-  --p-paper-50: 250 250 249;
-  --p-paper-100: 242 241 240;
-  --p-paper-200: 230 229 226;
-  --p-ink-900: 16 18 20;
-  --p-ink-700: 30 34 38;
-  --p-ink-500: 86 91 96;
-  --p-cyan-500: 21 188 223;
-  --p-cyan-800: 10 111 134;
-  --p-volt-500: 159 255 0;
+  --p-cream-50: 251 248 243; /* #FBF8F3 */
+  --p-cream-100: 246 239 231; /* #F6EFE7 */
+  --p-cream-200: 237 229 216; /* #EDE5D8 */
+  --p-ink-900: 38 35 33; /* #262321 */
+  --p-ink-700: 58 56 54; /* #3A3836 */
+  --p-ink-500: 107 100 92; /* #6B645C */
+  --p-bronze-700: 111 85 64; /* #6F5540 */
+  --p-bronze-400: 201 167 128; /* #C9A780 */
+  --p-peach-200: 244 218 198;
+  --p-sage-200: 217 223 204;
+  --p-sky-200: 211 223 229;
 
   /* ── 2. Semantic ───────────────────────────────────────────────── */
-  --c-bg: var(--p-paper-100);
-  --c-surface: var(--p-paper-50);
-  --c-sunken: var(--p-paper-200);
-  --c-fg: var(--p-ink-900);
-  --c-fg-muted: var(--p-ink-500);
-  --c-raised-dark: var(--p-ink-700);
-  --c-accent: var(--p-cyan-500);
-  --c-accent-text: var(--p-cyan-800); /* accent for small text on light */
-  --c-signal: var(--p-volt-500); /* "live / now" indicator only */
+  --c-bg: var(--p-cream-100); /* the wall */
+  --c-surface: var(--p-cream-50); /* mats, cards, form fields */
+  --c-band: var(--p-cream-200); /* one tan band per page */
+  --c-fg: var(--p-ink-900); /* headings */
+  --c-body: var(--p-ink-700); /* running text */
+  --c-muted: var(--p-ink-500); /* secondary text, 5.2:1 on bg */
+  --c-accent: var(--p-bronze-700); /* buttons, italic emphasis, 6.4:1 on bg */
+  --c-accent-soft: var(--p-bronze-400); /* accent on the dark band */
+  --c-dark: var(--p-ink-700); /* dark band and footer */
+  --c-wash-a: var(--p-peach-200);
+  --c-wash-b: var(--p-sage-200);
+  --c-wash-c: var(--p-sky-200);
 
-  --font-display: 'Quantico', 'Arial Narrow', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Jost', 'Century Gothic', system-ui, sans-serif;
 
-  --text-display-xl: clamp(2.6rem, 5.9vw, 5.25rem);
-  --text-display-lg: clamp(2.1rem, 4.8vw, 4.25rem);
-  --text-display-md: clamp(1.6rem, 2.8vw, 2.6rem);
-  --text-body-lg: clamp(1.05rem, 1.25vw, 1.25rem);
-  --text-label: 0.72rem;
+  --text-display-xl: clamp(2.9rem, 5.6vw, 5.25rem);
+  --text-display-lg: clamp(2.4rem, 4.4vw, 4rem);
+  --text-display-md: clamp(1.9rem, 3vw, 2.9rem);
+  --text-lead: clamp(1.6rem, 3.1vw, 2.85rem);
+  --text-body-lg: clamp(1.05rem, 1.2vw, 1.2rem);
+  --text-label: 0.7rem;
 
   --space-gutter: clamp(1.25rem, 5vw, 5rem);
-  --space-section: clamp(5rem, 11vw, 10rem);
+  --space-section: clamp(5.5rem, 11vw, 10.5rem);
+  --width-page: 1280px;
 
-  --chamfer-sm: 10px;
-  --chamfer-md: 16px;
-  --chamfer-lg: 28px;
-  --radius-frame: 14px;
+  --radius-plate: 2px;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 200ms;
-  --dur-base: 450ms;
-  --dur-slow: 900ms;
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 250ms;
+  --dur-base: 600ms;
+  --dur-slow: 1100ms;
 
-  --shadow-lift: 0 40px 90px -40px rgb(var(--c-fg) / 0.45);
-  --shadow-frame: 0 30px 70px -28px rgb(var(--c-fg) / 0.55);
+  --shadow-plate: 0 40px 70px -38px rgb(var(--c-dark) / 0.5), 0 2px 6px rgb(var(--c-dark) / 0.06);
 
   /* ── 3. Component ──────────────────────────────────────────────── */
-  --btn-primary-bg: rgb(var(--c-accent));
-  --btn-primary-fg: rgb(var(--c-fg));
-  --btn-ghost-line: rgb(var(--c-fg) / 0.2);
-  --nav-bg: rgb(var(--c-bg) / 0.82);
-  --nav-line: rgb(var(--c-fg) / 0.1);
-  --frame-chrome: #1b1e22;
-  --grid-line: rgb(var(--c-fg) / 0.05);
+  --btn-bg: rgb(var(--c-accent));
+  --btn-fg: rgb(var(--c-surface));
+  --btn-fill: rgb(var(--c-fg)); /* slides up on hover */
+  --rule: rgb(var(--c-fg) / 0.16);
+  --nav-bg: rgb(var(--c-bg) / 0.86);
+  --plate-mat: rgb(var(--c-surface));
 }

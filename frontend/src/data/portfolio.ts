@@ -1,12 +1,3 @@
-import type { LucideIcon } from 'lucide-react';
-import { Boxes, Code2, Database, GitBranch, Globe2, Layers3, MonitorSmartphone, PenTool } from 'lucide-react';
-
-export type SkillCluster = {
-  title: string;
-  icon: LucideIcon;
-  items: string[];
-};
-
 export type ProjectStory = {
   id: string;
   title: string;
@@ -36,75 +27,66 @@ export type WebProject = {
   url: string;
   displayUrl: string;
   summary: string;
-  features: string[];
-  tags: string[];
-  image: string;
-  imageFull: string;
-  note?: string;
-  theme: { bg: string; fg: string; accent: string };
+  points: string[];
+  builtWith: string;
+  /** 4:5 screenshot of the first screen. */
+  plate: string;
+  /** Tall screenshot of the page, panned on hover. */
+  tall: string;
 };
 
 export const profile = {
   name: 'Arbaan Qureshi',
-  role: 'Product Engineer · Apps, Web and Platforms',
+  role: 'Product engineer',
   company: 'VirtuProse',
   location: 'Bangalore, India',
   email: 'mergeme2@gmail.com',
   phone: '+91 9164444469',
   github: 'https://github.com/arbaan-max',
   linkedin: 'https://www.linkedin.com/in/arbaan-flutter-developer/',
-  experience: 'Almost 5 years',
-  headline:
-    'Product engineer with almost five years across Flutter apps, web platforms, ERP software and backend APIs, for businesses in India, Kuwait and Saudi Arabia.',
-  // Words wrapped in *asterisks* are highlighted.
-  story:
-    "I'm Arbaan, a product engineer from Bangalore. I started in *Flutter,* shipping apps for schools, newsrooms and a *twelve-app* quick-commerce operation. Today at *VirtuProse* I build the web side too: storefronts, editorial sites and *ERP* *software* that businesses in Kuwait, Saudi Arabia and India open every working day.",
+  headline: 'Apps, websites and business software, built end to *end.*',
+  intro:
+    "I'm Arbaan Qureshi. For almost five years I've shipped Flutter apps, online stores and ERP systems for companies in India, Kuwait and Saudi Arabia.",
 };
 
 export const navItems = [
-  { label: 'Story', href: '#story' },
-  { label: 'Web', href: '#work' },
+  { label: 'About', href: '#about' },
+  { label: 'Work', href: '#work' },
   { label: 'Apps', href: '#apps' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
 ];
 
-export const marqueeRows = [
-  ['Flutter', 'Next.js', 'React', 'Node.js', 'TypeScript', 'Firebase', 'MongoDB'],
-  ['Mobile apps', 'E-commerce', 'ERP systems', 'Marketplaces', 'Dashboards', 'Arabic + English'],
+/** The About paragraph. Image entries render as small inline plates. */
+export const aboutStory: (string | { img: string; alt: string })[] = [
+  'I started in Flutter, building apps for schools, a news publisher and a twelve-app quick-commerce business. At VirtuProse I now build for the web as well: online stores',
+  { img: '/projects/lily-eve-plate.jpg', alt: 'Lily Eve flower store' },
+  'venue sites',
+  { img: '/projects/trapped-inn-plate.jpg', alt: 'Trapped Inn escape rooms' },
+  'and ERP software',
+  { img: '/projects/orvia-plate.jpg', alt: 'ORVIA ERP sign-in' },
+  'for companies in Kuwait, Saudi Arabia and India.',
 ];
 
-export const skillClusters: SkillCluster[] = [
+export const services = [
   {
-    title: 'Cross-platform apps',
-    icon: Boxes,
-    items: ['Flutter', 'Dart', 'Android', 'iOS', 'Windows', 'macOS', 'TV apps'],
+    title: 'Mobile apps',
+    body: 'Flutter apps for Android and iOS, and for desktop and TV when the product needs them.',
   },
   {
-    title: 'Web platforms',
-    icon: Globe2,
-    items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'E-commerce', 'ERP dashboards'],
+    title: 'Websites and stores',
+    body: 'Next.js sites and online stores in English and Arabic, from the first layout to launch.',
   },
   {
-    title: 'Interface craft',
-    icon: PenTool,
-    items: ['Landing pages', 'Admin panels', 'Responsive UI', 'Arabic / RTL layouts', 'Motion and interaction'],
+    title: 'Business software',
+    body: 'ERP systems, dashboards and admin panels, with the APIs and databases behind them.',
   },
-  {
-    title: 'Architecture and state',
-    icon: Layers3,
-    items: ['BLoC / Cubit', 'Riverpod', 'Clean Architecture', 'Code quality'],
-  },
-  {
-    title: 'Backend and systems',
-    icon: Database,
-    items: ['REST APIs', 'Firebase', 'Node.js', 'Express.js', 'MongoDB'],
-  },
-  {
-    title: 'Team delivery',
-    icon: GitBranch,
-    items: ['Team coordination', 'Code review', 'Technical decisions', 'Agile delivery'],
-  },
+];
+
+export const toolGroups = [
+  { title: 'Apps', items: ['Flutter', 'Dart', 'Android and iOS', 'Windows and macOS', 'TV apps'] },
+  { title: 'Web', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Arabic and RTL layouts'] },
+  { title: 'State and structure', items: ['BLoC and Cubit', 'Riverpod', 'Clean Architecture', 'Code review'] },
+  { title: 'Backend', items: ['Node.js', 'Express.js', 'MongoDB', 'Firebase', 'REST APIs'] },
 ];
 
 export const webProjects: WebProject[] = [
@@ -112,157 +94,126 @@ export const webProjects: WebProject[] = [
     id: 'trapped-inn',
     name: 'Trapped Inn',
     kind: 'Escape-room venue site',
-    origin: 'Built at VirtuProse',
+    origin: 'VirtuProse',
     market: 'Salmiya, Kuwait',
     url: 'https://trapped-inn-seven.vercel.app/',
     displayUrl: 'trapped-inn-seven.vercel.app',
     summary:
-      'Seven escape-room stories inside one mystery hotel. The homepage is the lobby itself: visitors move through an illustrated hall and pick the door they want to open.',
-    features: [
-      'Interactive "choose your room" lobby hero',
-      'Seven room story pages with pricing',
-      'Booking handoff per room',
-      'Group and team visit enquiries',
-    ],
-    tags: ['Next.js', 'Immersive UI', 'Booking flow'],
-    image: '/projects/trapped-inn-hero.jpg',
-    imageFull: '/projects/trapped-inn-full.jpg',
-    theme: { bg: '#0B1017', fg: '#F4EFE6', accent: '#F0B648' },
+      'Seven escape rooms inside one mystery hotel. The homepage is the hotel lobby: visitors move through it and pick the door they want to open.',
+    points: ['A lobby you can explore, with seven doors', 'A story page and price for each room', 'Booking handoff for every room'],
+    builtWith: 'Next.js',
+    plate: '/projects/trapped-inn-plate.jpg',
+    tall: '/projects/trapped-inn-tall.jpg',
   },
   {
     id: 'lily-eve',
     name: 'Lily Eve & Eucalyptus',
-    kind: 'Two-brand flower and plant store',
-    origin: 'Built at VirtuProse',
+    kind: 'Flower and plant store',
+    origin: 'VirtuProse',
     market: 'Kuwait',
     url: 'https://lily-eve-ecommerce.vercel.app/',
     displayUrl: 'lily-eve-ecommerce.vercel.app',
     summary:
-      'One storefront for two brands: Lily Eve for flowers, Eucalyptus for plants. Shoppers browse by brand or occasion, pay in KWD and track delivery across Kuwait.',
-    features: [
-      'Two brands sharing one catalogue and bag',
-      'English and Arabic storefront',
-      'Accounts, bag and order tracking',
-      'KWD pricing with a free-delivery threshold',
-    ],
-    tags: ['Next.js', 'E-commerce', 'EN / AR'],
-    image: '/projects/lily-eve-hero.jpg',
-    imageFull: '/projects/lily-eve-full.jpg',
-    theme: { bg: '#EDE5D8', fg: '#33302D', accent: '#6F5540' },
+      'One online store for two brands: Lily Eve sells flowers, Eucalyptus sells plants. Shoppers browse by brand or occasion and pay in Kuwaiti dinar.',
+    points: ['Two brands sharing one catalogue and bag', 'English and Arabic storefront', 'Accounts and order tracking'],
+    builtWith: 'Next.js',
+    plate: '/projects/lily-eve-plate.jpg',
+    tall: '/projects/lily-eve-tall.jpg',
   },
   {
     id: 'maktob',
     name: 'Maktob Holding',
-    kind: 'Private investment office',
-    origin: 'Built at VirtuProse',
+    kind: 'Investment office site',
+    origin: 'VirtuProse',
     market: 'Kuwait',
     url: 'https://maktob-website.vercel.app/',
     displayUrl: 'maktob-website.vercel.app',
     summary:
-      'An editorial site for a private investment office. It reads like a published record of market calls, with long-form analysis on equities, commodities and the Kuwait Stock Exchange.',
-    features: [
-      'Bilingual publishing in English and Arabic',
-      'Blog with category filtering',
-      'Light and dark reading themes',
-      'Opportunities and book sections',
-    ],
-    tags: ['Next.js', 'Editorial', 'EN / AR', 'Theming'],
-    image: '/projects/maktob-hero.jpg',
-    imageFull: '/projects/maktob-full.jpg',
-    theme: { bg: '#0F1A2E', fg: '#F4F1EA', accent: '#D9B25F' },
+      'A publishing site for a private investment office, with long articles on equities, commodities and the Kuwait Stock Exchange.',
+    points: ['Articles in English and Arabic', 'Blog with category filters', 'Light and dark reading modes'],
+    builtWith: 'Next.js',
+    plate: '/projects/maktob-plate.jpg',
+    tall: '/projects/maktob-tall.jpg',
   },
   {
     id: 'orvia',
     name: 'ORVIA',
-    kind: 'Auto-parts ERP',
-    origin: 'Built at VirtuProse',
+    kind: 'ERP for auto-parts dealers',
+    origin: 'VirtuProse',
     market: 'Saudi Arabia',
     url: 'https://erp.virtuprose.com/',
     displayUrl: 'erp.virtuprose.com',
     summary:
-      'An operating system for auto-parts businesses: items, inventory, wholesale, dealers and accounting in one workspace, with Saudi VAT and ZATCA e-invoicing built in.',
-    features: [
-      'Arabic-first interface with English switch',
-      'Company data isolated per business',
-      'Role-based access by branch and warehouse',
-      'VAT and ZATCA e-invoicing',
-    ],
-    tags: ['Next.js', 'ERP', 'Multi-tenant', 'Arabic / RTL'],
-    image: '/projects/orvia-hero.jpg',
-    imageFull: '/projects/orvia-hero.jpg',
-    note: 'Private workspace. The product sits behind this sign-in.',
-    theme: { bg: '#0D1F18', fg: '#EEF2EF', accent: '#4ADE9E' },
+      'Items, inventory, wholesale, dealers and accounting in one workspace, with Saudi VAT and ZATCA e-invoicing. The product sits behind this sign-in.',
+    points: ['Arabic first, with an English switch', 'Each company’s data kept separate', 'Access by role, branch and warehouse'],
+    builtWith: 'Next.js',
+    plate: '/projects/orvia-plate.jpg',
+    tall: '/projects/orvia-tall.jpg',
   },
   {
     id: 'tekrio',
     name: 'Tekrio',
-    kind: 'Pre-owned device marketplace',
+    kind: 'Marketplace for used phones',
     origin: 'Client work',
     market: 'Karnataka, India',
     url: 'https://www.tekrio.in/',
     displayUrl: 'tekrio.in',
     summary:
-      'A three-sided marketplace for used phones. Sellers describe a device, verified buyers bid through partnered stores, and the highest offer comes back with doorstep pickup.',
-    features: [
-      'Guided five-step selling journey',
-      'Live offers from multiple verified buyers',
-      'Separate retailer and buyer onboarding',
-      'City-based service across seven cities',
-    ],
-    tags: ['Marketplace', 'Onboarding flows', 'Lead capture'],
-    image: '/projects/tekrio-hero.jpg',
-    imageFull: '/projects/tekrio-full.jpg',
-    theme: { bg: '#18243D', fg: '#FFFFFF', accent: '#4CC2F5' },
+      'Sellers describe a phone, verified buyers bid through partner stores, and the highest offer comes back with doorstep pickup.',
+    points: ['A five-step selling flow', 'Offers from several verified buyers', 'Separate sign-up for retailers and buyers'],
+    builtWith: 'HTML, CSS and JavaScript',
+    plate: '/projects/tekrio-plate.jpg',
+    tall: '/projects/tekrio-tall.jpg',
   },
 ];
 
 export const experience = [
   {
     company: 'VirtuProse',
-    tag: 'Now',
-    focus: 'Web platforms, e-commerce and ERP',
+    tag: 'Current',
+    focus: 'Websites, online stores and ERP',
     work: 'Lily Eve & Eucalyptus, Maktob Holding, Trapped Inn, ORVIA',
   },
   {
     company: 'Tekrio',
     tag: 'Client',
-    focus: 'Pre-owned device marketplace',
-    work: 'Customer, retailer and buyer journeys on tekrio.in',
+    focus: 'Marketplace for used phones',
+    work: 'Seller, retailer and buyer flows on tekrio.in',
   },
   {
     company: 'Nextaverse',
     tag: 'Flutter',
-    focus: 'Quick-commerce ecosystem',
+    focus: 'Quick commerce',
     work: 'Tingting, almost 12 connected apps',
   },
   {
     company: 'Cumin360',
     tag: 'Flutter',
-    focus: 'EdTech',
+    focus: 'Education',
     work: 'GrowonTeachers and GrowonStudents',
   },
   {
     company: 'Gloify',
     tag: 'Flutter',
-    focus: 'Pay-and-earn consumer app',
+    focus: 'Pay-and-earn app',
     work: 'Playzo',
   },
   {
     company: 'Kaizenque',
     tag: 'Flutter',
-    focus: 'News and content',
+    focus: 'News',
     work: 'ThePeople Wire',
   },
   {
     company: 'Pqube',
     tag: 'Full stack',
-    focus: 'End-to-end product build',
+    focus: 'City app',
     work: 'Udupi app, backend and frontend',
   },
   {
     company: 'Freelance',
     tag: 'Full stack',
-    focus: 'Business management platform',
+    focus: 'Spa management system',
     work: 'OneSpa, built in 10 working days',
   },
 ];
@@ -498,27 +449,3 @@ export const projectStories: ProjectStory[] = [
   },
 ];
 
-export const stats = [
-  { value: 5, prefix: '~', suffix: '', label: 'years building production software' },
-  { value: 20, prefix: '', suffix: '+', label: 'apps, sites and platform modules shipped' },
-  { value: 12, prefix: '', suffix: '', label: 'connected apps in one quick-commerce ecosystem' },
-  { value: 3, prefix: '', suffix: '', label: 'countries served: India, Kuwait, Saudi Arabia' },
-];
-
-export const focusAreas = [
-  {
-    icon: Code2,
-    title: 'Whole-product ownership',
-    body: 'Screens, state, APIs, backend logic, dashboards and release blockers. I can carry a product from the first idea to the version people actually use.',
-  },
-  {
-    icon: MonitorSmartphone,
-    title: 'Every screen size',
-    body: 'Android and iOS apps, Flutter on desktop and TV, plus websites, storefronts and admin panels, all connected to the same stable backend.',
-  },
-  {
-    icon: Globe2,
-    title: 'Launch-ready finish',
-    body: 'Clean layouts, fast interactions, proper loading and error states, and Arabic and English side by side when the market needs both.',
-  },
-];

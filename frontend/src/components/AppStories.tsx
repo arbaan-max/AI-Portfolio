@@ -1,159 +1,126 @@
-import { useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Plus } from 'lucide-react';
 import { projectStories, type ProjectStory } from '../data/portfolio';
-import { ease, useMediaQuery } from '../lib/motion';
-import { RevealText } from './ui/RevealText';
-import { SectionLabel } from './ui/SectionLabel';
+import { ease, inView } from '../lib/motion';
+import { SectionHead } from './ui/SectionHead';
 
 const getSteps = (project: ProjectStory) => [
-  { label: 'Issue', title: 'What was broken', body: project.before },
-  { label: 'Challenge', title: 'The hard part', body: project.challenge },
-  { label: 'Build', title: 'How I solved it', body: project.solution },
-  { label: 'Impact', title: 'What changed', body: project.result },
+  { label: 'The issue', body: project.before },
+  { label: 'The hard part', body: project.challenge },
+  { label: 'What I built', body: project.solution },
+  { label: 'What changed', body: project.result },
 ];
 
-type StoryCardProps = {
+type StoryRowProps = {
   project: ProjectStory;
   index: number;
-  total: number;
-  progress: MotionValue<number>;
-  stacked: boolean;
+  open: boolean;
+  onToggle: () => void;
 };
 
-function StoryCard({ project, index, total, progress, stacked }: StoryCardProps) {
-  const [step, setStep] = useState(0);
-  const steps = getSteps(project);
-  const dark = index % 2 === 1;
-  // Each card shrinks slightly as the cards after it slide over the top.
-  const scale = useTransform(progress, [index / total, 1], [1, 1 - (total - index - 1) * 0.03]);
+function StoryRow({ project, index, open, onToggle }: StoryRowProps) {
+  const panelId = `story-${project.id}`;
 
   return (
-    <div
-      className="lg:sticky lg:mb-[14vh] lg:last:mb-0"
-      style={stacked ? { top: `calc(6.5rem + ${index * 14}px)` } : undefined}
+    <motion.li
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={inView}
+      transition={{ duration: 0.9, ease: ease.soft, delay: index * 0.06 }}
+      className="border-t border-surface/20 last:border-b"
     >
-      <motion.article
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.9, ease: ease.out }}
-        style={stacked ? { scale } : undefined}
-        className={`chamfer-lg grid origin-top gap-10 p-6 sm:p-10 lg:min-h-[62vh] lg:grid-cols-12 lg:gap-12 lg:p-14 ${
-          dark ? 'bg-ink text-paper' : 'bg-surface text-ink shadow-lift'
-        }`}
-      >
-        <div className="flex flex-col lg:col-span-5">
-          <p className={`label flex items-center gap-4 ${dark ? 'text-paper/60' : 'text-muted'}`}>
-            <span className={dark ? 'text-accent' : 'text-accent-deep'}>
-              0{index + 1} / 0{total}
-            </span>
-            {project.company}
-          </p>
-          <h3 className="display mt-6 text-display-md">{project.sceneLabel}</h3>
-          <p className="mt-4 font-display text-lg font-bold">{project.title}</p>
-          <p className={`label mt-2 ${dark ? 'text-accent' : 'text-accent-deep'}`}>{project.type}</p>
-          <p className={`mt-6 leading-relaxed ${dark ? 'text-paper/70' : 'text-muted'}`}>{project.summary}</p>
+      <h3>
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={onToggle}
+          className="group grid w-full grid-cols-[2.5rem_minmax(0,1fr)_auto] items-baseline gap-x-4 py-7 text-left md:grid-cols-[4rem_minmax(0,1.5fr)_minmax(0,1fr)_auto] md:gap-x-8 md:py-9"
+        >
+          <span className="label text-gold">0{index + 1}</span>
+          <span className="display text-[clamp(1.6rem,3vw,2.6rem)] transition-transform duration-700 ease-soft group-hover:translate-x-3">
+            {project.title}
+          </span>
+          <span className="label col-start-2 text-surface/60 md:col-start-auto">
+            {project.company} · {project.type}
+          </span>
+          <span
+            aria-hidden="true"
+            className={`col-start-3 row-start-1 grid h-10 w-10 place-items-center self-center rounded-full border transition-[transform,background-color,border-color,color] duration-500 ease-soft md:col-start-auto md:row-start-auto ${
+              open ? 'rotate-45 border-gold bg-gold text-night' : 'border-surface/30 group-hover:border-gold'
+            }`}
+          >
+            <Plus size={17} strokeWidth={1.6} />
+          </span>
+        </button>
+      </h3>
 
-          <div className="mt-auto flex flex-wrap gap-2 pt-8">
-            {project.stack.map((item) => (
-              <span key={item} className="chip">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className={`flex flex-col border-t pt-8 lg:col-span-7 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0 ${dark ? 'border-paper/15' : 'border-ink/10'}`}>
-          <div role="tablist" aria-label={`${project.title} story`} className="flex flex-wrap gap-1">
-            {steps.map((item, itemIndex) => {
-              const selected = itemIndex === step;
-              return (
-                <button
-                  key={item.label}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  onClick={() => setStep(itemIndex)}
-                  className={`label relative px-4 py-3 transition-colors duration-200 ${
-                    selected ? 'text-ink' : dark ? 'text-paper/60 hover:text-paper' : 'text-muted hover:text-ink'
-                  }`}
-                >
-                  {selected && (
-                    <motion.span
-                      layoutId={`step-${project.id}`}
-                      className="chamfer-sm absolute inset-0 bg-accent"
-                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                    />
-                  )}
-                  <span className="relative">
-                    0{itemIndex + 1} {item.label}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div role="tabpanel" className="mt-10 min-h-[13rem] flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.35, ease: ease.out }}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={panelId}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.8, ease: ease.soft }}
+            className="overflow-hidden"
+          >
+            <div className="pb-12 md:pl-[6rem]">
+              <p className="max-w-[58ch] font-display text-[clamp(1.35rem,2vw,1.75rem)] italic leading-snug text-surface/90">
+                {project.summary}
+              </p>
+              <motion.dl
+                className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 xl:grid-cols-4"
+                initial="hidden"
+                animate="show"
+                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}
               >
-                <h4 className="display text-2xl">{steps[step].title}</h4>
-                <p className={`mt-5 max-w-[58ch] text-body-lg ${dark ? 'text-paper/75' : 'text-ink/75'}`}>
-                  {steps[step].body}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <ul className={`label mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t pt-6 ${dark ? 'border-paper/15 text-paper/60' : 'border-ink/10 text-muted'}`}>
-            {project.highlights.map((highlight) => (
-              <li key={highlight}>{highlight}</li>
-            ))}
-          </ul>
-        </div>
-      </motion.article>
-    </div>
+                {getSteps(project).map((step) => (
+                  <motion.div
+                    key={step.label}
+                    variants={{
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ease.soft } },
+                    }}
+                    className="border-t border-surface/20 pt-5"
+                  >
+                    <dt className="label text-gold">{step.label}</dt>
+                    <dd className="mt-3 text-[0.98rem] leading-relaxed text-surface/75">{step.body}</dd>
+                  </motion.div>
+                ))}
+              </motion.dl>
+              <p className="label mt-10 text-surface/55">{project.stack.join(' · ')}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.li>
   );
 }
 
 export function AppStories() {
-  const stacked = useMediaQuery('(min-width: 1024px) and (min-height: 700px)');
-  const listRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start start', 'end end'] });
+  const [open, setOpen] = useState<string | null>('tingting');
 
   return (
-    <section id="apps" className="relative bg-sunken px-gutter py-section">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <SectionLabel index="03" className="mb-5 text-muted">
-              App work
-            </SectionLabel>
-            <RevealText text="Shipped in *Flutter.*" className="display text-display-lg" accentClassName="text-accent-deep" />
-          </div>
-          <p className="max-w-sm text-muted lg:pb-2">
-            Six products from schools to quick commerce. Each one is told the way it happened: the issue, the hard
-            part, the build and what changed.
-          </p>
-        </div>
+    <section id="apps" className="on-dark bg-night px-gutter py-section text-surface">
+      <div className="mx-auto max-w-page">
+        <SectionHead eyebrow="Case studies" title="Flutter apps I've *shipped*">
+          Six products, from two school apps to a quick-commerce business run on almost twelve. Open a row to read
+          how each one went.
+        </SectionHead>
 
-        <div ref={listRef} className="flex flex-col gap-6 lg:block">
+        <ul className="mt-16">
           {projectStories.map((project, index) => (
-            <StoryCard
+            <StoryRow
               key={project.id}
               project={project}
               index={index}
-              total={projectStories.length}
-              progress={scrollYProgress}
-              stacked={stacked}
+              open={open === project.id}
+              onToggle={() => setOpen((current) => (current === project.id ? null : project.id))}
             />
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
