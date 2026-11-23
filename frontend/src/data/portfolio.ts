@@ -111,8 +111,8 @@ export const webProjects: WebProject[] = [
     kind: 'Flower and plant store',
     origin: 'VirtuProse',
     market: 'Kuwait',
-    url: 'https://lily-eve-ecommerce.vercel.app/',
-    displayUrl: 'lily-eve-ecommerce.vercel.app',
+    url: 'https://www.lilyeveco.com/',
+    displayUrl: 'lilyeveco.com',
     summary:
       'One online store for two brands: Lily Eve sells flowers, Eucalyptus sells plants. Shoppers browse by brand or occasion and pay in Kuwaiti dinar.',
     points: ['Two brands sharing one catalogue and bag', 'English and Arabic storefront', 'Accounts and order tracking'],
@@ -126,8 +126,8 @@ export const webProjects: WebProject[] = [
     kind: 'Investment office site',
     origin: 'VirtuProse',
     market: 'Kuwait',
-    url: 'https://maktob-website.vercel.app/',
-    displayUrl: 'maktob-website.vercel.app',
+    url: 'https://maktobholding.com/',
+    displayUrl: 'maktobholding.com',
     summary:
       'A publishing site for a private investment office, with long articles on equities, commodities and the Kuwait Stock Exchange.',
     points: ['Articles in English and Arabic', 'Blog with category filters', 'Light and dark reading modes'],
