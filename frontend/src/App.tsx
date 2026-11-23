@@ -3,13 +3,13 @@ import { AnimatePresence, MotionConfig, useReducedMotion } from 'framer-motion';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { About } from './components/About';
-import { AppStories } from './components/AppStories';
+import { Apps } from './components/Apps';
 import { ContactSection, Footer } from './components/ContactSection';
 import { Experience } from './components/Experience';
 import { Hero } from './components/Hero';
 import { Navbar } from './components/Navbar';
 import { Preloader } from './components/Preloader';
-import { WebWork } from './components/WebWork';
+import { Work } from './components/Work';
 import { Cursor } from './components/ui/Cursor';
 
 /** Eased wheel scrolling. Touch scrolling and reduced-motion visitors keep the native behaviour. */
@@ -46,9 +46,9 @@ export default function App() {
       <Cursor />
       <main>
         <Hero ready={!loading} />
+        <Work />
+        <Apps />
         <About />
-        <WebWork />
-        <AppStories />
         <Experience />
         <ContactSection />
       </main>

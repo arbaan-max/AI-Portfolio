@@ -19,6 +19,14 @@
   --p-peach-200: 244 218 198;
   --p-sage-200: 217 223 204;
   --p-sky-200: 211 223 229;
+  /* Bento tile colours: brighter than the wall so the grid carries the colour. */
+  --p-saffron-400: 242 179 61; /* #F2B33D */
+  --p-teal-700: 31 111 120; /* #1F6F78 */
+  --p-terracotta-600: 184 71 47; /* #B8472F */
+  --p-cobalt-600: 47 93 168; /* #2F5DA8 */
+  --p-blush-200: 241 213 203; /* #F1D5CB */
+  --p-sage-300: 207 224 195; /* #CFE0C3 */
+  --p-sky-300: 201 221 235; /* #C9DDEB */
 
   /* ── 2. Semantic ───────────────────────────────────────────────── */
   --c-bg: var(--p-cream-100); /* the wall */
@@ -33,6 +41,13 @@
   --c-wash-a: var(--p-peach-200);
   --c-wash-b: var(--p-sage-200);
   --c-wash-c: var(--p-sky-200);
+  --c-tile-saffron: var(--p-saffron-400); /* ink text */
+  --c-tile-teal: var(--p-teal-700); /* light text */
+  --c-tile-terracotta: var(--p-terracotta-600); /* light text */
+  --c-tile-cobalt: var(--p-cobalt-600); /* light text */
+  --c-tile-blush: var(--p-blush-200); /* ink text */
+  --c-tile-sage: var(--p-sage-300); /* ink text */
+  --c-tile-sky: var(--p-sky-300); /* ink text */
 
   --font-display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
   --font-body: 'Jost', 'Century Gothic', system-ui, sans-serif;
@@ -49,6 +64,7 @@
   --width-page: 1280px;
 
   --radius-plate: 2px;
+  --radius-tile: 28px;
 
   --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-fast: 250ms;

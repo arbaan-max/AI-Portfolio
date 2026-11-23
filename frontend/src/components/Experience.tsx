@@ -1,82 +1,51 @@
 import { motion } from 'framer-motion';
-import { experience, toolGroups } from '../data/portfolio';
-import { ease, inView } from '../lib/motion';
+import { experience } from '../data/portfolio';
+import { ease, tileEntrance } from '../lib/motion';
+import { TILE_RADIUS } from './ui/DetailPanel';
 import { SectionHead } from './ui/SectionHead';
 
 export function Experience() {
   return (
-    <section id="experience" className="bg-band px-gutter py-section">
+    <section id="experience" className="px-gutter pb-section">
       <div className="mx-auto max-w-page">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-4">
-            <SectionHead eyebrow="Experience" title="Where I've *worked*" className="lg:sticky lg:top-28">
-              Six companies, one client project and freelance work.
-            </SectionHead>
-          </div>
+        <SectionHead eyebrow="Experience" title="Where I've *worked*">
+          Six companies, one client project and freelance work.
+        </SectionHead>
 
-          <ol className="lg:col-span-7 lg:col-start-6">
-            {experience.map((item, index) => (
+        <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {experience.map((item, index) => {
+            const current = item.tag === 'Current';
+            return (
               <motion.li
                 key={item.company}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={inView}
-                transition={{ duration: 0.9, ease: ease.soft, delay: index * 0.05 }}
-                className="group relative grid gap-x-8 gap-y-1 border-t border-ink/15 py-6 last:border-b sm:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_5.5rem] sm:items-baseline"
+                {...tileEntrance(index)}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.5, ease: ease.soft }}
+                className={`group flex min-h-[230px] flex-col p-7 ${
+                  current ? 'bg-tile-saffron text-ink' : 'border border-ink/10 bg-surface text-ink'
+                }`}
+                style={{ borderRadius: TILE_RADIUS }}
               >
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 inset-y-0 -mx-4 origin-left scale-x-0 bg-surface transition-transform duration-700 ease-soft group-hover:scale-x-100"
-                />
-                <h3 className="display relative text-[1.9rem] transition-transform duration-700 ease-soft group-hover:translate-x-2">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="label opacity-60">0{index + 1}</span>
+                  <span
+                    className={`label inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${
+                      current ? 'bg-ink text-tile-saffron' : 'bg-band text-muted'
+                    }`}
+                  >
+                    {current && <span className="h-1.5 w-1.5 rounded-full bg-tile-saffron" />}
+                    {item.tag}
+                  </span>
+                </span>
+                <h3 className="mt-auto pt-8 font-display text-[2rem] font-medium leading-tight transition-transform duration-500 ease-soft group-hover:translate-x-1">
                   {item.company}
                 </h3>
-                <p className="relative">
-                  <span className="block text-ink">{item.focus}</span>
-                  <span className="block text-muted">{item.work}</span>
-                </p>
-                <span className={`label relative sm:text-right ${item.tag === 'Current' ? 'text-accent' : 'text-muted'}`}>
-                  {item.tag}
-                </span>
+                <p className="mt-1 font-medium">{item.focus}</p>
+                <p className={`mt-1 text-[0.95rem] ${current ? 'text-ink/75' : 'text-muted'}`}>{item.work}</p>
               </motion.li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="mt-28 grid gap-12 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-4">
-            <SectionHead eyebrow="Tools" title="What I work *with*" />
-          </div>
-
-          <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
-            {toolGroups.map((group, groupIndex) => (
-              <motion.div
-                key={group.title}
-                initial="hidden"
-                whileInView="show"
-                viewport={inView}
-                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: groupIndex * 0.08 } } }}
-              >
-                <h3 className="label border-b border-ink/15 pb-4 text-accent">{group.title}</h3>
-                <ul className="mt-4">
-                  {group.items.map((item) => (
-                    <li key={item} className="overflow-hidden">
-                      <motion.span
-                        className="block py-1 font-display text-[1.45rem] text-ink"
-                        variants={{
-                          hidden: { y: '110%' },
-                          show: { y: '0%', transition: { duration: 0.9, ease: ease.soft } },
-                        }}
-                      >
-                        {item}
-                      </motion.span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

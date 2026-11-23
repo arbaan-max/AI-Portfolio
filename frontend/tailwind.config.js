@@ -19,6 +19,13 @@ export default {
         'wash-a': token('--c-wash-a'),
         'wash-b': token('--c-wash-b'),
         'wash-c': token('--c-wash-c'),
+        'tile-saffron': token('--c-tile-saffron'),
+        'tile-teal': token('--c-tile-teal'),
+        'tile-terracotta': token('--c-tile-terracotta'),
+        'tile-cobalt': token('--c-tile-cobalt'),
+        'tile-blush': token('--c-tile-blush'),
+        'tile-sage': token('--c-tile-sage'),
+        'tile-sky': token('--c-tile-sky'),
       },
       fontFamily: {
         sans: ['var(--font-body)'],
@@ -40,6 +47,7 @@ export default {
       },
       borderRadius: {
         plate: 'var(--radius-plate)',
+        tile: 'var(--radius-tile)',
       },
       boxShadow: {
         plate: 'var(--shadow-plate)',

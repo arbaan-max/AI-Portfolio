@@ -11,6 +11,14 @@ export const duration = { fast: 0.25, base: 0.6, slow: 1.1 };
 /** Fires once an element's top edge is 12% above the bottom of the screen, however tall it is. */
 export const inView = { once: true, margin: '0px 0px -12% 0px' } as const;
 
+/** Bento tiles rise and settle as they enter, staggered along each row. */
+export const tileEntrance = (index: number) => ({
+  initial: { opacity: 0, y: 40, scale: 0.97 },
+  whileInView: { opacity: 1, y: 0, scale: 1 },
+  viewport: inView,
+  transition: { duration: 0.9, ease: ease.soft, delay: (index % 3) * 0.08 },
+});
+
 /** Clip-path states for the "curtain" image reveal. */
 export const curtain = {
   closed: 'inset(100% 0% 0% 0%)',

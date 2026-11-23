@@ -24,8 +24,17 @@ export function Cursor() {
       const target = event.target instanceof Element ? event.target.closest('[data-cursor]') : null;
       setLabel(target ? target.getAttribute('data-cursor') : null);
     };
+    // Scrolling moves content under a still pointer, so drop the label until the pointer moves again.
+    // A click usually opens a panel over the tile, so drop the label then too.
+    const handleScroll = () => setLabel(null);
     window.addEventListener('pointermove', handleMove, { passive: true });
-    return () => window.removeEventListener('pointermove', handleMove);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('pointerdown', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('pointermove', handleMove);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('pointerdown', handleScroll);
+    };
   }, [fine, x, y]);
 
   if (!fine) {

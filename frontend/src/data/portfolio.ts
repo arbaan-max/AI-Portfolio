@@ -1,3 +1,12 @@
+export type StoreApp = {
+  name: string;
+  url: string;
+  icon: string;
+  shots: string[];
+  /** Google Play download band, shown when it says something. */
+  downloads?: string;
+};
+
 export type ProjectStory = {
   id: string;
   title: string;
@@ -16,6 +25,10 @@ export type ProjectStory = {
     title: string;
     body: string;
   }[];
+  /** Live Google Play listings for this product. */
+  apps?: StoreApp[];
+  /** Internal apps that run the business behind the customer app. */
+  supporting?: { count: string; apps: string[] };
 };
 
 export type WebProject = {
@@ -31,8 +44,10 @@ export type WebProject = {
   builtWith: string;
   /** 4:5 screenshot of the first screen. */
   plate: string;
-  /** Tall screenshot of the page, panned on hover. */
+  /** Tall screenshot of the page, scrolled inside the detail panel. */
   tall: string;
+  /** Tile colours, taken from each site's own brand. */
+  tile: { bg: string; fg: string; accent: string };
 };
 
 export const profile = {
@@ -50,9 +65,9 @@ export const profile = {
 };
 
 export const navItems = [
-  { label: 'About', href: '#about' },
   { label: 'Work', href: '#work' },
   { label: 'Apps', href: '#apps' },
+  { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
 ];
 
@@ -104,6 +119,7 @@ export const webProjects: WebProject[] = [
     builtWith: 'Next.js',
     plate: '/projects/trapped-inn-plate.jpg',
     tall: '/projects/trapped-inn-tall.jpg',
+    tile: { bg: '#0B1017', fg: '#F4EFE6', accent: '#F0B648' },
   },
   {
     id: 'lily-eve',
@@ -119,6 +135,7 @@ export const webProjects: WebProject[] = [
     builtWith: 'Next.js',
     plate: '/projects/lily-eve-plate.jpg',
     tall: '/projects/lily-eve-tall.jpg',
+    tile: { bg: '#F1D5CB', fg: '#3B2620', accent: '#7A4535' },
   },
   {
     id: 'maktob',
@@ -134,6 +151,7 @@ export const webProjects: WebProject[] = [
     builtWith: 'Next.js',
     plate: '/projects/maktob-plate.jpg',
     tall: '/projects/maktob-tall.jpg',
+    tile: { bg: '#0F1A2E', fg: '#F4F1EA', accent: '#D9B25F' },
   },
   {
     id: 'orvia',
@@ -149,6 +167,7 @@ export const webProjects: WebProject[] = [
     builtWith: 'Next.js',
     plate: '/projects/orvia-plate.jpg',
     tall: '/projects/orvia-tall.jpg',
+    tile: { bg: '#0D3B2C', fg: '#EEF2EF', accent: '#4ADE9E' },
   },
   {
     id: 'tekrio',
@@ -160,10 +179,11 @@ export const webProjects: WebProject[] = [
     displayUrl: 'tekrio.in',
     summary:
       'Sellers describe a phone, verified buyers bid through partner stores, and the highest offer comes back with doorstep pickup.',
-    points: ['A five-step selling flow', 'Offers from several verified buyers', 'Separate sign-up for retailers and buyers'],
+    points: ['A five-step selling flow', 'Offers from several verified buyers', 'Store, Vendor and Diagnostics apps on Google Play'],
     builtWith: 'HTML, CSS and JavaScript',
     plate: '/projects/tekrio-plate.jpg',
     tall: '/projects/tekrio-tall.jpg',
+    tile: { bg: '#0E6FAE', fg: '#FFFFFF', accent: '#BDE8FF' },
   },
 ];
 
@@ -177,8 +197,8 @@ export const experience = [
   {
     company: 'Tekrio',
     tag: 'Client',
-    focus: 'Marketplace for used phones',
-    work: 'Seller, retailer and buyer flows on tekrio.in',
+    focus: 'Marketplace and trade-in apps',
+    work: 'tekrio.in plus the Store, Vendor and Diagnostics apps',
   },
   {
     company: 'Nextaverse',
@@ -213,15 +233,15 @@ export const experience = [
   {
     company: 'Freelance',
     tag: 'Full stack',
-    focus: 'Spa management system',
-    work: 'OneSpa, built in 10 working days',
+    focus: 'Business and health apps',
+    work: 'OneSpa, built in 10 working days, and BACK2BASICS',
   },
 ];
 
 export const projectStories: ProjectStory[] = [
   {
     id: 'growon',
-    title: 'GrowonTeachers and GrowonStudents',
+    title: 'GrowOn Teacher and GrowOn Students',
     company: 'Cumin360',
     type: 'EdTech teacher and student apps',
     summary:
@@ -238,6 +258,22 @@ export const projectStories: ProjectStory[] = [
     highlights: ['2 apps', 'Attendance', 'Homework', 'Results', 'Parent contact'],
     sceneLabel: 'Classroom to cloud',
     scale: '2 role-focused apps',
+    apps: [
+      {
+        name: 'GrowOn Teacher',
+        url: 'https://play.google.com/store/apps/details?id=com.thinkdigital.growonplus_teacher',
+        icon: '/apps/growon-teacher-icon.webp',
+        shots: ['/apps/growon-teacher-1.jpg', '/apps/growon-teacher-2.jpg', '/apps/growon-teacher-3.jpg'],
+        downloads: '5K+',
+      },
+      {
+        name: 'GrowOn Students',
+        url: 'https://play.google.com/store/apps/details?id=com.growon.student',
+        icon: '/apps/growon-student-icon.webp',
+        shots: ['/apps/growon-student-1.jpg', '/apps/growon-student-2.jpg', '/apps/growon-student-3.jpg'],
+        downloads: '10K+',
+      },
+    ],
     storyBeats: [
       {
         title: 'The school day was scattered',
@@ -313,7 +349,20 @@ export const projectStories: ProjectStory[] = [
     stack: ['Flutter', 'Dart', 'Multi-app architecture', 'CRM flows', 'Live monitoring'],
     highlights: ['12 apps', 'Store app', 'Delivery app', 'CRM', 'Live orders', 'Offers'],
     sceneLabel: 'Order to operation',
+    supporting: {
+      count: '10+',
+      apps: ['Accounts', 'Store', 'Delivery', 'Live monitoring', 'Admin dashboard', 'Investors', 'Festival specials manager'],
+    },
     scale: 'Almost 12 connected apps',
+    apps: [
+      {
+        name: 'TingTing',
+        url: 'https://play.google.com/store/apps/details?id=com.tingtingnow.app',
+        icon: '/apps/tingting-icon.webp',
+        shots: ['/apps/tingting-1.jpg', '/apps/tingting-2.jpg', '/apps/tingting-3.jpg'],
+        downloads: '10K+',
+      },
+    ],
     storyBeats: [
       {
         title: 'One order touched many teams',
@@ -390,6 +439,15 @@ export const projectStories: ProjectStory[] = [
     highlights: ['News app', 'Reading flow', 'Content browsing', 'Mobile-first'],
     sceneLabel: 'Story to reader',
     scale: 'Content product',
+    apps: [
+      {
+        name: 'The People Wire',
+        url: 'https://play.google.com/store/apps/details?id=com.thepeoplewire.tpw',
+        icon: '/apps/peoplewire-icon.webp',
+        shots: ['/apps/peoplewire-1.jpg', '/apps/peoplewire-2.jpg', '/apps/peoplewire-3.jpg'],
+        downloads: '100+',
+      },
+    ],
     storyBeats: [
       {
         title: 'News has to feel instant',
@@ -447,5 +505,74 @@ export const projectStories: ProjectStory[] = [
       },
     ],
   },
+  {
+    id: 'tekrio-apps',
+    title: 'Tekrio Store, Vendor and Diagnostics',
+    company: 'Tekrio',
+    type: 'Trade-in apps for stores and vendors',
+    summary:
+      'Three Android apps behind the Tekrio marketplace: stores capture trade-ins and confirm pickups, vendors send quotes, and Diagnostics checks a phone and hands the store a QR report.',
+    before:
+      'The tekrio.in site brings sellers in, but the trade-in itself happens at a partner store, with a vendor quoting on the device. Store staff and vendors needed their own tools for that part.',
+    challenge:
+      'Three apps for three roles had to share one trade-in record: the store starts it, Diagnostics checks the phone, the vendor quotes, and everyone sees the same status through to pickup.',
+    solution:
+      'Store handles trade-ins, quotes, pickups and reward points at the branch. Vendor receives live trade-ins, submits a final quote and confirms collection with a six-digit code. Diagnostics runs guided checks on the screen, cameras, audio, sensors and battery, then produces a QR report for the Store app.',
+    result:
+      'Stores, vendors and the device check now run through one flow from the first offer to handover, and all three apps are live on Google Play.',
+    stack: ['Flutter', 'Dart', 'Role-based apps', 'QR reports', 'Device diagnostics'],
+    highlights: ['3 apps', 'Store', 'Vendor', 'Diagnostics', 'QR report'],
+    sceneLabel: 'Trade-in, start to pickup',
+    scale: '3 connected apps',
+    apps: [
+      {
+        name: 'Tekrio Store',
+        url: 'https://play.google.com/store/apps/details?id=com.tekrio.storemanager',
+        icon: '/apps/tekrio-store-icon.webp',
+        shots: ['/apps/tekrio-store-1.jpg', '/apps/tekrio-store-2.jpg', '/apps/tekrio-store-3.jpg'],
+      },
+      {
+        name: 'Tekrio Vendor',
+        url: 'https://play.google.com/store/apps/details?id=com.tekrio.vendor',
+        icon: '/apps/tekrio-vendor-icon.webp',
+        shots: ['/apps/tekrio-vendor-1.jpg', '/apps/tekrio-vendor-2.jpg', '/apps/tekrio-vendor-3.jpg'],
+      },
+      {
+        name: 'Tekrio Diagnostics',
+        url: 'https://play.google.com/store/apps/details?id=com.tekrio.diagnostics',
+        icon: '/apps/tekrio-diagnostics-icon.webp',
+        shots: ['/apps/tekrio-diagnostics-1.jpg', '/apps/tekrio-diagnostics-2.jpg', '/apps/tekrio-diagnostics-3.jpg'],
+      },
+    ],
+    storyBeats: [],
+  },
+  {
+    id: 'back2basics',
+    title: 'BACK2BASICS',
+    company: 'Client project',
+    type: 'Health coaching app',
+    summary:
+      'A health coaching app that tracks activity, nutrition, hydration, sleep and energy, built around steady habits instead of quick fixes.',
+    before:
+      'The client coaches people on long-term health habits and needed one app where clients log their day and see their progress.',
+    challenge:
+      'Daily tracking only works when logging is quick. Activity, food, water, sleep and energy each needed a simple entry and a clear view of the trend.',
+    solution:
+      'I built the Flutter app with a place for each habit, quick daily logging and progress views, and published it on Google Play.',
+    result: 'Clients log their habits in one app and follow their progress over time. It has passed 500 downloads.',
+    stack: ['Flutter', 'Dart', 'Habit tracking', 'Health data', 'Play Store release'],
+    highlights: ['Activity', 'Nutrition', 'Hydration', 'Sleep', 'Energy'],
+    sceneLabel: 'Habits over quick fixes',
+    scale: 'Consumer health app',
+    apps: [
+      {
+        name: 'BACK2BASICS',
+        url: 'https://play.google.com/store/apps/details?id=com.mycompany.back2basics',
+        icon: '/apps/back2basics-icon.webp',
+        shots: ['/apps/back2basics-1.jpg', '/apps/back2basics-2.jpg', '/apps/back2basics-3.jpg'],
+        downloads: '500+',
+      },
+    ],
+    storyBeats: [],
+  },
 ];
-
