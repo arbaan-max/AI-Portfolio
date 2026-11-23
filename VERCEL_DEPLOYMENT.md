@@ -62,3 +62,9 @@ npx vercel@latest --prod
 3. Add your domain.
 4. Follow Vercel's DNS instructions.
 5. Wait for verification, then test the live domain.
+
+## If the Vercel project's Root Directory is `frontend`
+
+`frontend/vercel.json` covers that setup: Vercel reads the `vercel.json` inside the Root Directory, and its
+commands (`npm ci`, `npm run build`, output `dist`) override the dashboard's build settings. The root
+`vercel.json` is only used when the Root Directory is the repository root.
